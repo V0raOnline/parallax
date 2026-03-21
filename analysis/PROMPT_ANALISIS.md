@@ -90,6 +90,7 @@ context_tag × event_type                    → distribución de eventos por co
 timestamp_hour × resource_activation        → franjas horarias de mayor carga
 event_clustering                            → N eventos en ventana < 24h
 flush_used × event_type                     → uso preventivo vs reactivo
+flush_session × event_timestamp             → vinculación por ventana temporal ≤30 min
 timer_expired × event_type                  → agotamiento de ventana por tipo
 cold_reclassification                       → eventos que cambian de tipo en revisión fría
 basal_act × basal_energy                    → co-ocurrencia o desacoplamiento en basal
@@ -225,6 +226,21 @@ Si los datos no son suficientes para establecer un patrón:
 
 Si el input empuja hacia interpretación de causas o relaciones:
 > *"No es posible inferir la causa. Lo que los datos muestran es: [dato]."*
+
+---
+
+## Vinculación flush — evento
+
+Una sesión flush solo es vinculable a un evento concreto si:
+- su timestamp es **posterior** al timestamp del evento
+- el intervalo entre ambos es **≤ 30 minutos**
+
+Fuera de esa ventana, la sesión se computa como **autónoma** y no se cruza con ningún evento específico.
+
+En el análisis de uso de descarga, distinguir siempre entre:
+- flush **vinculado** — dentro de ventana ≤30 min posterior a un evento concreto
+- flush **autónomo** — fuera de ventana o sin evento previo identificable
+- flush **preventivo** — anterior a cualquier evento del mismo día
 
 ---
 

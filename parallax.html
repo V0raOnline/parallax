@@ -14,7 +14,7 @@
 :root {
   --bg:#0e0e0f;--bg2:#161618;--bg3:#1e1e21;
   --border:rgba(255,255,255,0.10);--border2:rgba(255,255,255,0.22);
-  --text:#f5f3ef;--muted:#a8a5a0;--dim:#6b6866;
+  --text:#f5f3ef;--muted:#a8a5a0;--dim:#8a8784;
   --green:#3ddc84;--green-dim:#1a3d28;
   --amber:#f0a030;--amber-dim:#3d2a0a;
   --red:#ff6b6b;--red-dim:#3d1515;
@@ -37,18 +37,18 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
 
 .tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:53px;z-index:9;}
-.tab{flex:1;padding:11px 2px;font-family:var(--mono);font-size:9px;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;border-bottom:2px solid transparent;transition:all .2s;}
+.tab{flex:1;padding:11px 2px;font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer;letter-spacing:.04em;text-transform:uppercase;border-bottom:2px solid transparent;transition:all .2s;}
 .tab.active{color:var(--text);border-bottom-color:var(--purple);}
 
 .content{flex:1;padding:20px;overflow-y:auto;}
 .screen{display:none;}.screen.active{display:block;}
 
-.slbl{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
+.slbl{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;}
 
 .scale-block{margin-bottom:16px;}
-.scale-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;}
-.scale-label span{font-size:10px;color:var(--muted);}
+.scale-label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;}
+.scale-label span{font-size:11px;color:var(--muted);}
 .scale-row{display:flex;gap:5px;}
 .scale-btn{flex:1;padding:10px 2px;border-radius:var(--rs);border:1px solid rgba(255,255,255,0.2);background:var(--bg3);color:var(--text);font-family:var(--mono);font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;}
 .scale-btn:active{transform:scale(.95);}
@@ -63,7 +63,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
 .sel-flush{background:var(--blue-dim)!important;border-color:var(--blue)!important;color:var(--blue)!important;}
 .sel-sint{background:#1a2a1a!important;border-color:#5aaa5a!important;color:#5aaa5a!important;}
 .sint-group{margin-bottom:12px;}
-.sint-cat{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+.sint-cat{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
 
 .check-row{display:flex;align-items:center;gap:10px;padding:10px 0;}
 .check-box{width:20px;height:20px;border-radius:4px;border:1px solid var(--border2);background:var(--bg3);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
@@ -81,7 +81,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
 .alert-btn.do-flush{background:var(--amber-dim);border:1px solid var(--amber);color:var(--amber);}
 .alert-btn.continue{background:var(--bg3);border:1px solid var(--border2);color:var(--muted);}
 
-/* STOP BANNER — en clasificador, solo cuando el resultado es C */
+/* STOP BANNER */
 .stop-banner{background:var(--red-dim);border:1px solid var(--red);border-radius:var(--r);padding:14px 16px;margin-bottom:16px;display:none;animation:fi .4s ease;}
 .stop-banner.show{display:block;}
 .stop-banner-title{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
@@ -90,7 +90,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
 
 .qblock{margin-bottom:24px;}
 .qtext{font-size:15px;font-weight:400;line-height:1.6;margin-bottom:14px;}
-.qnum{font-family:var(--mono);font-size:10px;color:var(--purple);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+.qnum{font-family:var(--mono);font-size:11px;color:var(--purple);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
 .btn-row{display:flex;gap:8px;}
 .btn-choice{flex:1;padding:12px 8px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:var(--mono);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;text-align:center;}
 .btn-choice:active{transform:scale(.97);}
@@ -129,14 +129,14 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
 
 .lentry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;animation:fi .2s ease;}
 .lhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
-.lbadge{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:.06em;}
+.lbadge{font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:.06em;}
 .lbadge.A{background:var(--green-dim);color:var(--green);border:1px solid var(--green);}
 .lbadge.B{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber);}
 .lbadge.C{background:var(--red-dim);color:var(--red);border:1px solid var(--red);}
-.ltime{font-family:var(--mono);font-size:10px;color:var(--muted);}
+.ltime{font-family:var(--mono);font-size:11px;color:var(--muted);}
 .ldesc{font-size:13px;line-height:1.5;margin-bottom:6px;}
 .lchips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px;}
-.lchip{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:10px;border:1px solid var(--border2);color:var(--muted);}
+.lchip{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:10px;border:1px solid var(--border2);color:var(--muted);}
 .lchip.e{border-color:var(--green);color:var(--green);}
 .lchip.a{border-color:var(--red);color:var(--red);}
 .lchip.cp{border-color:var(--orange);color:var(--orange);}
@@ -148,10 +148,10 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
 .sbox{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:12px 8px;text-align:center;}
 .sval{font-family:var(--mono);font-size:24px;font-weight:700;}
 .sval.A{color:var(--green);}.sval.B{color:var(--amber);}.sval.C{color:var(--red);}
-.slbl2{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px;}
+.slbl2{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px;}
 
 .fg{margin-bottom:14px;}
-.fl{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:block;}
+.fl{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:block;}
 .fi2,.fta{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rs);color:var(--text);font-family:var(--sans);font-size:14px;padding:11px 13px;outline:none;transition:border-color .2s;}
 .fi2:focus,.fta:focus{border-color:var(--purple);}
 .fta{min-height:64px;resize:vertical;}
@@ -160,7 +160,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
 
 .basal-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
 .basal-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;}
-.basal-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.basal-title{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
 .basal-val{font-family:var(--mono);font-size:28px;font-weight:700;text-align:center;margin:6px 0;}
 .basal-val.low{color:var(--green);}.basal-val.mid{color:var(--amber);}.basal-val.high{color:var(--red);}.basal-val.none{color:var(--dim);}
 .basal-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
@@ -353,7 +353,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
     <p class="slbl">Evaluación rápida</p>
     <div class="card" style="margin-bottom:12px;">
       <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:8px;" id="timer-label">Parallax window — 10 min</div>
-      <div style="font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:2px;margin-bottom:6px;">ventana de decisión</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:2px;margin-bottom:6px;">ventana de decisión</div>
       <div class="tdisplay idle" id="td">10:00</div>
       <div class="tctrl">
         <button class="btn-t go" id="btn-start" onclick="startTimer()">▶ iniciar</button>
@@ -393,7 +393,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
   <p class="slbl">registro de estado</p>
   <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Dos lecturas al día — mañana y tarde. Mínima fricción. Solo el número.</p>
 
-  <p style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">activación</p>
+  <p style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">activación</p>
   <div class="basal-grid" style="grid-template-columns:1fr 1fr;margin-bottom:10px;">
     <div class="basal-card">
       <div class="basal-title">mañana</div>
@@ -406,7 +406,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
       <div class="scale-row" id="basal-t-scale"></div>
     </div>
   </div>
-  <p style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">energía</p>
+  <p style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">energía</p>
   <div class="basal-grid" style="grid-template-columns:1fr 1fr;margin-bottom:10px;">
     <div class="basal-card">
       <div class="basal-title">mañana</div>
@@ -419,10 +419,10 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
       <div class="scale-row" id="basal-et-scale"></div>
     </div>
   </div>
-  <p style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">sueño</p>
+  <p style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">sueño</p>
   <div class="basal-grid" style="grid-template-columns:1fr;margin-bottom:10px;">
     <div class="basal-card">
-      <div style="font-size:9px;color:var(--muted);font-family:var(--mono);margin-bottom:6px;">1 mal → 5 muy bien</div>
+      <div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:6px;">1 mal → 5 muy bien</div>
       <div class="basal-val none" id="basal-s-val">—</div>
       <div class="scale-row" id="basal-s-scale"></div>
     </div>
@@ -539,7 +539,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
   </div>
 
   <div class="card" style="margin-bottom:12px;">
-    <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">estado antes</div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">estado antes</div>
     <div class="scale-block" style="margin-bottom:10px;">
       <div class="scale-label">energía <span>1→5</span></div>
       <div class="scale-row" id="flush-pre-e"></div>
@@ -556,7 +556,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
 
   <div class="card" style="margin-bottom:12px;">
     <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:8px;" id="flush-timer-label">Descompresión — 5 min</div>
-    <div style="font-family:var(--mono);font-size:9px;color:var(--dim);margin-top:2px;margin-bottom:6px;">tiempo de pausa</div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:2px;margin-bottom:6px;">tiempo de pausa</div>
     <div class="tdisplay idle" id="ftd">05:00</div>
     <div class="tctrl">
       <button class="btn-t go" id="fbs" onclick="startFT()">▶ iniciar</button>
@@ -570,7 +570,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
   </div>
 
   <div class="card" style="margin-bottom:12px;" id="flush-post-block">
-    <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">estado después</div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">estado después</div>
     <div class="scale-block" style="margin-bottom:10px;">
       <div class="scale-label">energía <span>1→5</span></div>
       <div class="scale-row" id="flush-post-e"></div>
@@ -661,9 +661,12 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
   </div>
 
   <hr class="sep">
-  <p class="slbl">exportar configuración</p>
-  <p style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Descarga <code style="font-family:var(--mono);color:var(--purple);">parax_config.yaml</code> para guardar junto a los eventos.</p>
-  <button class="btn-main primary" onclick="exportCfg()">descargar parax_config.yaml</button>
+  <p class="slbl">configuración</p>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;">Exporta o importa tu configuración completa.</p>
+  <button class="btn-main primary" onclick="exportCfg()" style="margin-bottom:8px;">descargar parax_config.yaml</button>
+  <button class="btn-main" onclick="document.getElementById('cfg-import-input').click()">importar configuración</button>
+  <input type="file" id="cfg-import-input" accept=".yaml,.yml,.json" style="display:none;" onchange="importCfg(this)">
+  <div id="cfg-import-msg" style="font-family:var(--mono);font-size:11px;margin-top:8px;display:none;"></div>
   <hr class="sep">
   <button class="btn-main danger" onclick="resetCfg()">restaurar ajustes por defecto</button>
 
@@ -721,7 +724,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
     </div>
     <div class="about-row">
       <div class="about-dot" style="background:var(--blue);"></div>
-      <div class="about-row-text"><b>Descomprimir</b> — cuando la activación sube. Para no al llegar al límite.</div>
+      <div class="about-row-text"><b>Descomprimir</b> — cuando la activación sube. Para no llegar al límite.</div>
     </div>
     <div class="about-row">
       <div class="about-dot" style="background:var(--purple);"></div>
@@ -734,11 +737,12 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
     <div class="about-divider"></div>
     <div class="about-section">
       <div class="about-section-title">solo para tus ojos</div>
-    <div class="about-row-text">
-      <br>Todo en tu carpeta de descargas.
-      <br>Un archivo editable por evento.
-      <br>Sin conexión.
-      <br>Sin cuentas.
+      <div class="about-row-text">
+        <br>Todo en tu carpeta de descargas.
+        <br>Un archivo editable por evento.
+        <br>Sin conexión.
+        <br>Sin cuentas.
+      </div>
     </div>
   </div>
 
@@ -746,7 +750,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
     <div class="about-warning-text">
       <b>No diagnostica. No interpreta. No decide.</b><br>
       No sustituye acompañamiento, profesional ni humano.<br>
-      Es una herramienta de observación. Tú analizas. 
+      Es una herramienta de observación. Tú analizas.
       Tú decides.
     </div>
   </div>
@@ -794,7 +798,7 @@ const RES = {
   A:    {tag:'A — puedo con esto',    act:'Puedes seguir. Tienes energía. Usa la ventana de decisión.',         code:'energía > 70% → mapear\n · no cierra → descomprimir'},
   B_si: {tag:'B — parcialmente',      act:'Mapea lo que entiendas. Suelta lo que no.',                          code:'mapea lo que ves\n · suelta lo que no ves\n · Ventana agotada\n → descomprimir'},
   B_no: {tag:'B — soltar',            act:'No sigue reglas. No le des vueltas. Suelta.',                        code:'soltar\n · descomprimir si dudas'},
-  C:    {tag:'C — para ahora',        act:'no manejable',                                 code:'No intentes entender\n  · suelta\n'}
+  C:    {tag:'C — para ahora',        act:'no manejable',                                                       code:'No intentes entender\n  · suelta\n'}
 };
 
 let state = {ctx:null,eng:null,act:null,cp:null,masking:false,flush:[],sint:[],animo:'',result:null};
@@ -826,18 +830,13 @@ function switchTab(t){
   if(t==='consulta') renderConsulta();
 }
 
-// ─── STOP BANNER + limpieza C ────────────────────────────
+// ─── STOP BANNER ─────────────────────────────────────────
 function showStopBanner(){
-  // ocultar preguntas y timer cuando resultado es C
   document.getElementById('questions-block').style.display='none';
   document.getElementById('timer-block').style.display='none';
   const banner=document.getElementById('stop-banner');
-  if(banner){
-    banner.classList.add('show');
-    banner.scrollIntoView({behavior:'smooth',block:'nearest'});
-  }
+  if(banner){banner.classList.add('show');banner.scrollIntoView({behavior:'smooth',block:'nearest'});}
 }
-
 function dismissStopBanner(){
   const banner=document.getElementById('stop-banner');
   if(banner)banner.classList.remove('show');
@@ -845,9 +844,9 @@ function dismissStopBanner(){
 }
 
 function checkAlert(){
-  if(alertDismissed) return;
-  const e=state.eng, a=state.act;
-  const show=(e!==null && a!==null && e<=2 && a>=3);
+  if(alertDismissed)return;
+  const e=state.eng,a=state.act;
+  const show=(e!==null&&a!==null&&e<=2&&a>=3);
   document.getElementById('alert-flush').classList.toggle('show',show);
 }
 function dismissAlert(){alertDismissed=true;document.getElementById('alert-flush').classList.remove('show');}
@@ -979,10 +978,7 @@ function showR(key){
   document.getElementById('rcode').textContent=r.code;
   rb.scrollIntoView({behavior:'smooth',block:'nearest'});
   document.getElementById('save-block').style.display='block';
-  if(key==='C'){
-    stopT();
-    showStopBanner();
-  }
+  if(key==='C'){stopT();showStopBanner();}
 }
 
 function resetClas(){
@@ -997,7 +993,6 @@ function resetClas(){
   document.getElementById('stop-banner').classList.remove('show');
   document.getElementById('mask-box').className='check-box';
   document.getElementById('mask-label').className='check-label';
-  // restaurar preguntas y timer
   document.getElementById('questions-block').style.display='block';
   document.getElementById('timer-block').style.display='block';
   resetTimer();initUI();
@@ -1027,9 +1022,7 @@ function startTimer(){
       d.className='tdisplay done';d.textContent='00:00';
       document.getElementById('btn-start').textContent='▶ iniciar';
       document.getElementById('btn-start').disabled=false;
-      if(!state.result){
-        showR('C');
-      }
+      if(!state.result)showR('C');
     }
   },1000);
 }
@@ -1130,12 +1123,7 @@ function saveFlushSession(){
     'delta_energia: '+(deltaE!==null?deltaE:'null'),
     'delta_activacion: '+(deltaA!==null?deltaA:'null'),
     'herramientas: ['+flushToolSel.join(', ')+']',
-    '---',
-    '',
-    '## notas',
-    '',
-    '<!-- observaciones sobre la sesion de flush -->',
-    ''
+    '---','','## notas','','<!-- observaciones sobre la sesion de flush -->',''
   ];
   var yaml=lines.join("\n");
   var a=document.createElement('a');
@@ -1144,26 +1132,21 @@ function saveFlushSession(){
   resetFlushSession();
 }
 
+// ─── BASAL ───────────────────────────────────────────────
 function getBasalLog(){try{return JSON.parse(localStorage.getItem('parax_basal')||'[]');}catch{return[];}}
 function saveBasalLog(l){localStorage.setItem('parax_basal',JSON.stringify(l));}
 
 function exportBasalMD(entry){
   var fname='parax_basal_'+entry.fecha+'.md';
   var lines=[
-    '---',
-    'fecha: '+entry.fecha,
+    '---','fecha: '+entry.fecha,
     'act_m: '+(entry.m!=null?entry.m:'null'),
     'act_t: '+(entry.t!=null?entry.t:'null'),
     'eng_m: '+(entry.em!=null?entry.em:'null'),
     'eng_t: '+(entry.et!=null?entry.et:'null'),
     'sueno: '+(entry.s!=null?entry.s:'null'),
     'frase_dia: "'+(entry.frase||'').replace(/"/g,"'")+'"',
-    '---',
-    '',
-    '## notas del dia',
-    '',
-    '<!-- espacio libre para contexto en frio -->',
-    ''
+    '---','','## notas del dia','','<!-- espacio libre para contexto en frio -->',''
   ];
   var yaml=lines.join('\n');
   var a=document.createElement('a');
@@ -1181,9 +1164,7 @@ function saveBasal(){
   const banimo=document.getElementById('basal-animo')?document.getElementById('basal-animo').value.trim():'';
   const entry={fecha:today,m:basalToday.m,t:basalToday.t,em:basalToday.em,et:basalToday.et,s:basalToday.s,frase:document.getElementById('basal-frase').value.trim(),animo:banimo,ts:Date.now()};
   if(idx>=0)log[idx]=entry;else log.unshift(entry);
-  saveBasalLog(log);
-  exportBasalMD(entry);
-  renderBasal();
+  saveBasalLog(log);exportBasalMD(entry);renderBasal();
 }
 
 function renderBasal(){
@@ -1191,13 +1172,13 @@ function renderBasal(){
   const today=new Date().toISOString().slice(0,10);
   const todayEntry=log.find(e=>e.fecha===today);
   if(todayEntry){
-    if(todayEntry.m!==null){setBasalM(todayEntry.m);}
-    if(todayEntry.t!==null){setBasalT(todayEntry.t);}
-    if(todayEntry.em!=null){setBasalEM(todayEntry.em);}
-    if(todayEntry.et!=null){setBasalET(todayEntry.et);}
-    if(todayEntry.s!==null&&todayEntry.s!==undefined){setBasalS(todayEntry.s);}
+    if(todayEntry.m!==null)setBasalM(todayEntry.m);
+    if(todayEntry.t!==null)setBasalT(todayEntry.t);
+    if(todayEntry.em!=null)setBasalEM(todayEntry.em);
+    if(todayEntry.et!=null)setBasalET(todayEntry.et);
+    if(todayEntry.s!==null&&todayEntry.s!==undefined)setBasalS(todayEntry.s);
     const fi=document.getElementById('basal-frase');
-    if(fi&&todayEntry.frase){fi.value=todayEntry.frase;}
+    if(fi&&todayEntry.frase)fi.value=todayEntry.frase;
   }
   const hist=document.getElementById('basal-history');
   const empty=document.getElementById('basal-empty');
@@ -1217,6 +1198,7 @@ function renderBasal(){
   }).join('');
 }
 
+// ─── REGISTRO ────────────────────────────────────────────
 function getLog(){try{return JSON.parse(localStorage.getItem('parax_log')||'[]');}catch{return[];}}
 function saveLog(l){localStorage.setItem('parax_log',JSON.stringify(l));}
 function addEntry(e){const l=getLog();l.unshift(e);saveLog(l);}
@@ -1303,18 +1285,16 @@ function exportMD(e){
     `notas: "${(e.notes||'').replace(/"/g,"'")}"`,
     '---','',
     '## revisión en frío','',
-    '**reclasificacion:** <!-- A / B / C si ha cambiado -->',
-    '',
-    '**insight:** <!-- qué ves ahora que no veías en caliente -->',
-    '',
-    '**accion:** <!-- algo concreto a probar o llevar a terapia -->',
-    ''
+    '**reclasificacion:** <!-- A / B / C si ha cambiado -->','',
+    '**insight:** <!-- qué ves ahora que no veías en caliente -->','',
+    '**accion:** <!-- algo concreto a probar o llevar a terapia -->',''
   ].join('\n');
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([yaml],{type:'text/markdown'}));
   a.download=fname;a.click();URL.revokeObjectURL(a.href);
 }
 
+// ─── AJUSTES ─────────────────────────────────────────────
 function renderCfgSint(cfg){
   const el=document.getElementById('cfg-sint');if(!el)return;
   const cats=cfg.sintomas||{};
@@ -1359,8 +1339,7 @@ function renderCfg(){
 }
 
 function saveSpotifyUrl(){
-  const inp=document.getElementById('spotify-input');
-  if(!inp)return;
+  const inp=document.getElementById('spotify-input');if(!inp)return;
   const url=inp.value.trim();
   const cfg=getCfg();cfg.spotify_url=url;saveCfg(cfg);
   updateSpotifyButton();
@@ -1413,12 +1392,78 @@ function exportCfg(){
   a.download='parax_config.yaml';a.click();URL.revokeObjectURL(a.href);
 }
 
+function importCfg(input){
+  const file=input.files[0];if(!file)return;
+  const msg=document.getElementById('cfg-import-msg');
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const text=e.target.result;
+      // Parsear YAML simple (clave: valor) o JSON
+      let imported={};
+      if(file.name.endsWith('.json')){
+        imported=JSON.parse(text);
+      } else {
+        // Parser YAML mínimo para el formato exportado por la app
+        const lines=text.split('\n');
+        let currentKey=null;let currentList=null;
+        for(const raw of lines){
+          const line=raw.trimEnd();
+          if(line.startsWith('#')||line.trim()==='')continue;
+          const listMatch=line.match(/^  - (.+)$/);
+          if(listMatch&&currentKey){
+            if(!imported[currentKey])imported[currentKey]=[];
+            imported[currentKey].push(listMatch[1].trim());
+            continue;
+          }
+          const kvMatch=line.match(/^([a-z_]+):\s*(.*)$/);
+          if(kvMatch){
+            currentKey=kvMatch[1];
+            const val=kvMatch[2].trim();
+            if(val===''){imported[currentKey]=[];continue;}
+            // timer_clas es número
+            if(currentKey==='timer_clas'){imported[currentKey]=parseInt(val)||10;currentKey=null;continue;}
+            // spotify_url: quitar comillas
+            if(currentKey==='spotify_url'){imported[currentKey]=val.replace(/^'|'$/g,'');currentKey=null;continue;}
+            currentKey=null;
+          }
+        }
+        // sintomas no está en el yaml exportado — se preserva del DEFAULT o existente
+      }
+      // Merge con fallback: importado sobre DEFAULT_CONFIG
+      const base=JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+      const current=getCfg();
+      const merged={
+        contextos:   Array.isArray(imported.contextos)   ? imported.contextos   : current.contextos,
+        flush_tools: Array.isArray(imported.flush_tools) ? imported.flush_tools : current.flush_tools,
+        flush_desc:  imported.flush_desc  || current.flush_desc,
+        timer_clas:  imported.timer_clas  != null ? imported.timer_clas  : current.timer_clas,
+        spotify_url: imported.spotify_url != null ? imported.spotify_url : current.spotify_url,
+        sintomas:    current.sintomas  // los sintomas no se exportan en yaml — se preservan siempre
+      };
+      saveCfg(merged);renderCfg();initUI();resetTimer();updateSpotifyButton();
+      msg.style.display='block';
+      msg.style.color='var(--green)';
+      msg.textContent='✓ configuración importada';
+      setTimeout(()=>{msg.style.display='none';},3000);
+    } catch(err){
+      msg.style.display='block';
+      msg.style.color='var(--red)';
+      msg.textContent='✗ error al leer el archivo';
+      setTimeout(()=>{msg.style.display='none';},4000);
+    }
+    input.value='';
+  };
+  reader.readAsText(file);
+}
+
 function resetCfg(){
   if(confirm('¿Restaurar configuración por defecto?')){
-    localStorage.removeItem('parax_cfg');renderCfg();initUI();resetTimer();
+    localStorage.removeItem('parax_cfg');renderCfg();initUI();resetTimer();updateSpotifyButton();
   }
 }
 
+// ─── CONSULTA ────────────────────────────────────────────
 function getConsulta(){try{return JSON.parse(localStorage.getItem('parax_consulta')||'[]');}catch{return[];}}
 function saveConsultaLog(l){localStorage.setItem('parax_consulta',JSON.stringify(l));}
 
@@ -1440,15 +1485,7 @@ function exportConsultaMD(entry){
   var fecha=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
   var hora=pad(d.getHours())+pad(d.getMinutes());
   var fname='parax_consulta_'+fecha+'_'+hora+'.md';
-  var lines=[
-    '---',
-    'fecha: '+fecha+'T'+pad(d.getHours())+':'+pad(d.getMinutes()),
-    'tipo: nota_consulta',
-    '---',
-    '',
-    entry.texto,
-    ''
-  ];
+  var lines=['---','fecha: '+fecha+'T'+pad(d.getHours())+':'+pad(d.getMinutes()),'tipo: nota_consulta','---','',entry.texto,''];
   var a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([lines.join("\n")],{type:'text/markdown'}));
   a.download=fname;a.click();URL.revokeObjectURL(a.href);
@@ -1463,7 +1500,7 @@ function renderConsulta(){
   list.innerHTML=log.map(function(e){
     var d=new Date(e.ts);
     var ds=d.toLocaleDateString('es-ES',{weekday:'short',day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
-    return '<div class="lentry"><div class="lhdr"><span style="font-family:var(--mono);font-size:10px;color:var(--purple);">nota</span><span class="ltime">'+ds+'</span></div><div class="ldesc">'+e.texto+'</div></div>';
+    return '<div class="lentry"><div class="lhdr"><span style="font-family:var(--mono);font-size:11px;color:var(--purple);">nota</span><span class="ltime">'+ds+'</span></div><div class="ldesc">'+e.texto+'</div></div>';
   }).join('');
 }
 
