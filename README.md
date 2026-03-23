@@ -122,6 +122,26 @@ Y si en algún momento el registro se convierte en vigilancia ansiosa de ti mism
 
 ---
 
+## cómo usarla
+
+**Opción A — directamente en el navegador**
+
+Abre [v0raonline.github.io/parallax](https://v0raonline.github.io/parallax) en cualquier navegador.
+
+En móvil puedes añadirla a la pantalla de inicio y se comporta como una app nativa. En iOS: botón compartir → "Añadir a pantalla de inicio". En Android: menú del navegador → "Añadir a pantalla de inicio".
+
+**Opción B — descarga local**
+
+Descarga `parallax.html` y ábrelo con cualquier navegador. Sin instalación, sin dependencias.
+
+Esta opción te da una copia propia que no cambia si el repositorio se actualiza.
+
+**Nota sobre los datos**
+
+En ambos casos los datos son completamente locales — viven en el `localStorage` de tu dispositivo y nunca salen de él. Si usas las dos opciones en el mismo dispositivo, los datos no se comparten entre ellas: el navegador las trata como orígenes distintos.
+
+---
+
 ## cómo funciona por dentro
 
 La app funciona sin conexión. Está diseñada para poder usarla en momentos de activación: mínima fricción, respuestas con un toque.
