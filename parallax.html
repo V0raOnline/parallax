@@ -1,7 +1,28 @@
 <!DOCTYPE html>
+<!--
+  parallax.exe v1  ·  https://v0raonline.github.io/parallax/parallax.html
+  Copyright (c) 2024-2026 V0ra (v0raonline)
+  Licencia CC BY-NC-SA 4.0 — sin fines comerciales.
+-->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="author" content="V0ra (v0raonline)">
+<meta name="copyright" content="Copyright (c) 2024-2026 V0ra (v0raonline) — CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<meta name="description" content="Primera versión de parallax.exe: registro de episodios, clasificador A/B/C y módulo de descompresión. Funciona sin conexión y sin enviar datos a ningún sitio.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="parallax.exe">
+<meta property="og:locale" content="es_ES">
+<meta property="og:url" content="https://v0raonline.github.io/parallax/parallax.html">
+<meta property="og:title" content="Registro de episodios y descompresión — parallax.exe v1">
+<meta property="og:description" content="Registro de episodios, clasificador A/B/C y descompresión. Versión 1.">
+<meta property="og:image" content="https://v0raonline.github.io/parallax/og-card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Key art de PARALLAX: un dial de calibración mitad radar, mitad circuito, sobre fondo negro.">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -284,6 +305,9 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--sans);min-hei
     <div class="scale-block"><div class="scale-label">carga previa <span>1 limpio → 5 cargado</span></div><div class="scale-row" id="sc-carga"></div></div>
     <div class="check-row" onclick="toggleMasking()"><div class="check-box" id="mask-box"></div><span class="check-label" id="mask-label">¿enmascarando?</span></div>
   </div>
+  <!-- La alerta es descartable y nunca bloquea el flujo: avisa y se aparta. Un
+       aviso que obliga a atenderlo convierte la herramienta en algo que hay que
+       gestionar, y deja de usarse. V0-px 57729c74-341c-4b2d-a8e7-31aa9411e8e6 -->
   <div class="alert-flush" id="alert-flush">
     <div class="alert-flush-title">⚠ señal de sobrecarga</div>
     <div class="alert-flush-body">Energía baja + activación elevada. Mejor descomprimir antes de seguir.</div>
@@ -588,6 +612,9 @@ function getTimerSec(){return(getCfg().timer_clas||10)*60;}
 function getLog(){try{return JSON.parse(localStorage.getItem('parax_log')||'[]');}catch{return[];}}
 function saveLog(l){localStorage.setItem('parax_log',JSON.stringify(l));}
 function addEntry(e){const l=getLog();l.unshift(e);saveLog(l);}
+// El sufijo _v2 de esta clave no se refiere a la versión de la app: este fichero
+// es v1. No renombrarla: localStorage no migra solo y el registro de estado de
+// las instalaciones existentes quedaría huérfano. V0-px 57729c74-341c-4b2d-a8e7-31aa9411e8e6
 function getEstadoLog(){try{return JSON.parse(localStorage.getItem('parax_estado_v2')||'[]');}catch{return[];}}
 function saveEstadoLog(l){localStorage.setItem('parax_estado_v2',JSON.stringify(l));}
 function getConsulta(){try{return JSON.parse(localStorage.getItem('parax_consulta')||'[]');}catch{return[];}}

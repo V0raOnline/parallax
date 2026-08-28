@@ -8,7 +8,7 @@
 
 **Parallax no te dice qué hay. Desplaza el ángulo para que lo veas tú.**
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 ---
 
@@ -214,9 +214,11 @@ Repositorio: [github.com/V0raOnline/parallax](https://github.com/V0raOnline/para
 
 ## licencia
 
-Este proyecto está licenciado bajo [GNU General Public License v3.0](LICENSE).
+Este proyecto está licenciado bajo [Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional](LICENSE) (CC BY-NC-SA 4.0).
 
-Puedes usarlo, modificarlo y distribuirlo libremente, siempre que mantengas la misma licencia en cualquier versión derivada.
+Puedes usarlo, modificarlo y distribuirlo libremente **sin fines comerciales**, siempre que atribuyas la autoría y mantengas la misma licencia en cualquier versión derivada.
+
+Las versiones distribuidas antes del cambio de licencia siguen disponibles bajo GPL v3 para quien las obtuviera entonces; el cambio aplica de aquí en adelante.
 
 ---
 

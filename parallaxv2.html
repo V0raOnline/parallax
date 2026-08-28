@@ -1,7 +1,33 @@
 <!DOCTYPE html>
+<!--
+  parallax.exe v2  ·  https://v0raonline.github.io/parallax/parallaxv2.html
+  Copyright (c) 2024-2026 V0ra (v0raonline)
+  Licencia CC BY-NC-SA 4.0 — sin fines comerciales.
+-->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- Verificación de propiedad en Google Search Console. NO BORRAR: si esta
+     etiqueta desaparece se pierde la verificación del sitio sin ningún aviso.
+     El código va ligado a la cuenta, no a este proyecto: es el mismo en todos
+     los sitios de V0ra, y eso es correcto. -->
+<meta name="google-site-verification" content="2lwnAwKdnZQ9VhVad-aP90sSvz3QAU2bHNn3y36rvQU" />
+<meta name="author" content="V0ra (v0raonline)">
+<meta name="copyright" content="Copyright (c) 2024-2026 V0ra (v0raonline) — CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<meta name="description" content="Calibración diaria, registro de incidentes con revisión en frío y export a YAML. Todo local en el navegador: sin cuenta, sin nube, sin telemetría.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="parallax.exe">
+<meta property="og:locale" content="es_ES">
+<meta property="og:url" content="https://v0raonline.github.io/parallax/parallaxv2.html">
+<meta property="og:title" content="Registro de estados, demandas e incidentes — parallax.exe v2">
+<meta property="og:description" content="Registra estados, demandas e incidentes. No interpreta, no diagnostica, no predice.">
+<meta property="og:image" content="https://v0raonline.github.io/parallax/og-card.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Key art de PARALLAX: un dial de calibración mitad radar, mitad circuito, sobre fondo negro.">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -190,10 +216,10 @@ option{background:var(--bg3);}
 
 <nav class="nav">
   <button class="nav-btn active" id="nav-registro" onclick="showView('registro')"><span class="nav-icon">⊕</span>registro</button>
-  <button class="nav-btn" id="nav-historial" onclick="showView('historial')"><span class="nav-icon">≡</span>historial</button>
-  <button class="nav-btn" id="nav-ajustes" onclick="showView('ajustes')"><span class="nav-icon">⚙</span>ajustes</button>
   <button class="nav-btn" id="nav-incidentes" onclick="showView('incidentes')"><span class="nav-icon">⚡</span>incidentes</button>
   <button class="nav-btn" id="nav-notas" onclick="showView('notas')"><span class="nav-icon">✎</span>notas</button>
+  <button class="nav-btn" id="nav-historial" onclick="showView('historial')"><span class="nav-icon">≡</span>historial</button>
+  <button class="nav-btn" id="nav-ajustes" onclick="showView('ajustes')"><span class="nav-icon">⚙</span>ajustes</button>
   <button class="nav-btn" id="nav-about" onclick="showView('about')"><span class="nav-icon">◎</span>about</button>
 </nav>
 
@@ -265,8 +291,6 @@ option{background:var(--bg3);}
     <div style="padding:0 18px 20px;">
       <button class="btn-next" style="width:100%;" onclick="startIncidente()">Registrar incidente</button>
     </div>
-    <div class="screen-head" style="padding-top:0;"><div class="screen-label">registro</div><div class="screen-title" style="font-size:14px;">Historial de incidentes</div></div>
-    <div class="inc-hist-list" id="inc-hist-list"></div>
   </div>
   <div id="inc-flow" style="display:none;">
     <!-- P1: QUÉ OCURRIÓ -->
@@ -312,7 +336,7 @@ option{background:var(--bg3);}
 </div>
 
 <div class="view" id="view-historial">
-  <div class="screen-head"><div class="screen-label">registro longitudinal</div><div class="screen-title">Historial</div></div>
+  <div class="screen-head"><div class="screen-title">Historial</div></div>
   <div class="export-toggle" onclick="toggleExportPanel()">
     <span class="export-toggle-label">▶ export</span>
     <span class="export-toggle-arrow" id="export-arrow">▶</span>
@@ -334,7 +358,10 @@ option{background:var(--bg3);}
     </div>
     <button class="btn-export" onclick="exportZIP()">descargar ZIP</button>
   </div>
+  <div class="screen-head" style="padding-top:20px;"><div class="screen-label">calibraciones</div><div class="screen-title" style="font-size:14px;">Registro longitudinal</div></div>
   <div class="hist-list" id="hist-list"></div>
+  <div class="screen-head" style="padding-top:28px;"><div class="screen-label">incidentes</div><div class="screen-title" style="font-size:14px;">Historial de incidentes</div></div>
+  <div class="inc-hist-list" id="inc-hist-list"></div>
 </div>
 
 <div class="view" id="view-ajustes">
@@ -374,6 +401,10 @@ option{background:var(--bg3);}
 const DEFAULT_CFG={demandas:["trabajo profundo","reuniones","conducción","médico","terapia","compra","calor","ruido","luz intensa","ejercicio","viaje"],reguladores:["dormir","música","leer","escribir","jardín","pasear","silencio","conversación segura","respiración","ejercicio suave"],subsistemas:["neurológico","visual","auditivo","suelo pélvico","digestivo","musculoesquelético","cardiovascular","tegumentario"]};
 const ESTADO_OPTS=["coherente","lento","saturado","fragmentado","recuperando"];
 const SYS_MSGS=["Calibración registrada.\n\nEl sistema sigue haciendo cosas de sistema.","Registro almacenado.\n\nPersistimos.\nEso ya es información.","Incidencias sincronizadas.\n\nEl universo continúa sin publicar el manual técnico.","Serie temporal ampliada.\n\nTodavía no entendemos todo.\nPero entendemos más que ayer.","Subsistemas consultados.\n\nAlgunos siguen protestando.\nHa quedado registrado."];
+// Las claves px2_ van separadas de las parax_ de v1 a propósito: ambas versiones
+// se sirven desde el mismo origen y compartir clave hace que abrir una pise el
+// registro de la otra. localStorage es por origen, así que renombrar el fichero
+// equivale a empezar de cero. V0-px 57729c74-341c-4b2d-a8e7-31aa9411e8e6
 function getCfg(){try{const c=JSON.parse(localStorage.getItem("px2_cfg")||"{}");return{demandas:c.demandas||DEFAULT_CFG.demandas.slice(),reguladores:c.reguladores||DEFAULT_CFG.reguladores.slice(),subsistemas:c.subsistemas||DEFAULT_CFG.subsistemas.slice()};}catch(e){return{demandas:DEFAULT_CFG.demandas.slice(),reguladores:DEFAULT_CFG.reguladores.slice(),subsistemas:DEFAULT_CFG.subsistemas.slice()};}}
 function saveCfg(c){localStorage.setItem("px2_cfg",JSON.stringify(c));}
 function getLog(){try{return JSON.parse(localStorage.getItem("px2_log")||"[]");}catch(e){return[];}}
@@ -409,10 +440,50 @@ document.getElementById("modal-edit-btn").onclick=()=>{closeModalDirect();editCa
 function closeModal(e){if(e.target===document.getElementById("modal-overlay"))closeModalDirect();}
 function closeModalDirect(){document.getElementById("modal-overlay").classList.remove("open");}
 function renderAjustes(){const cfg=getCfg();["demandas","reguladores","subsistemas"].forEach(key=>{const el=document.getElementById("cfg-"+key);if(!el)return;el.innerHTML=cfg[key].map((t,i)=>`<div class="cfg-tag"><span>${t}</span><button class="cfg-tag-del" onclick="removeCfgItem('${key}',${i})">×</button></div>`).join("");});}
+const NOTA_SEP="· · · · · · · · · · · · · · · ·";
+const NOTA_STAMP_RE=/^\[(?:\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2}) \d{2}:\d{2}\]$/gm;
+function notaStamp(){
+  const d=new Date();const pad=n=>String(n).padStart(2,"0");
+  return `[${pad(d.getDate())}-${pad(d.getMonth()+1)}-${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}]`;
+}
+function notaLastStampIdx(txt){
+  NOTA_STAMP_RE.lastIndex=0;let m,idx=-1,end=-1;
+  while((m=NOTA_STAMP_RE.exec(txt))!==null){idx=m.index;end=m.index+m[0].length;}
+  return[idx,end];
+}
+function notaTailEmpty(txt){
+  const[,end]=notaLastStampIdx(txt);
+  return end<0?txt.trim()==="":txt.slice(end).trim()==="";
+}
+function stampNotas(){
+  const ta=document.getElementById("notas-content");if(!ta)return;
+  const txt=ta.value;
+  const toEnd=()=>{setTimeout(()=>{const n=ta.value.length;ta.setSelectionRange(n,n);ta.scrollTop=ta.scrollHeight;},0);};
+  if(txt.trim()===""){ta.value=notaStamp()+"\n\n";}
+  else if(notaTailEmpty(txt)){toEnd();return;}
+  else{ta.value=txt.replace(/\s+$/,"")+"\n\n"+NOTA_SEP+"\n"+notaStamp()+"\n\n";}
+  localStorage.setItem("px2_notas",ta.value);toEnd();showNotasStatus();
+}
+function trimNotasStamp(){
+  const ta=document.getElementById("notas-content");if(!ta)return;
+  const txt=ta.value;
+  if(!notaTailEmpty(txt))return;
+  const[idx]=notaLastStampIdx(txt);
+  if(idx<0)return;
+  let head=txt.slice(0,idx).replace(/\s+$/,"");
+  if(head.endsWith(NOTA_SEP))head=head.slice(0,-NOTA_SEP.length).replace(/\s+$/,"");
+  ta.value=head;
+  localStorage.setItem("px2_notas",head);
+}
 function initNotas(){
   const content=localStorage.getItem("px2_notas")||"";
   const ta=document.getElementById("notas-content");
-  if(ta){ta.value=content;ta.oninput=()=>{localStorage.setItem("px2_notas",ta.value);showNotasStatus();}}
+  if(ta){
+    ta.value=content;
+    ta.oninput=()=>{localStorage.setItem("px2_notas",ta.value);showNotasStatus();};
+    ta.onfocus=stampNotas;
+    ta.onblur=trimNotasStamp;
+  }
 }
 function showNotasStatus(){
   const el=document.getElementById("notas-status");
@@ -521,10 +592,10 @@ function showView(v){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('nav-'+v).classList.add('active');
   if(v==='registro'){document.getElementById('splash').style.display='block';document.getElementById('cal-flow').style.display='none';}
-  if(v==='historial')renderHistorial();
+  if(v==='historial'){renderHistorial();renderIncHistorial();}
   if(v==='ajustes'){renderAjustes();initAjustesTimer();}
   if(v==='notas')initNotas();
-  if(v==='incidentes'){backToIncSplash();renderIncHistorial();}
+  if(v==='incidentes')backToIncSplash();
 }
 
 function initAjustesTimer(){
@@ -573,6 +644,9 @@ function incGoScreen(n){
 const MODELOS={
   A:{cls:'modelo-a',label:'MODELO A',desc:'Sistema observable · Comprensible · Actuable',prompt:'Describe el siguiente paso accionable.',field:'accion'},
   B:{cls:'modelo-b',label:'MODELO B',desc:'Sistema parcialmente observable · Modelo incompleto · Actuar donde exista información.',prompt:'¿Dónde existe información suficiente para actuar?',field:'accion'},
+  // C deja prompt y field en null a propósito: es un estado terminal. Ofrecer
+  // campos adicionales después de declarar el sistema opaco invita a seguir
+  // modelando justo aquello sobre lo que no hay información. V0-px 57729c74-341c-4b2d-a8e7-31aa9411e8e6
   C:{cls:'modelo-c',label:'MODELO C',desc:'Sistema opaco · Información insuficiente · Suspender modelado.',prompt:null,field:null}
 };
 
@@ -649,6 +723,7 @@ function saveIncidente(){
 // ── INC HISTORIAL ──
 function renderIncHistorial(){
   const list=document.getElementById('inc-hist-list');
+  if(!list)return;
   const log=getIncLog();
   if(!log.length){list.innerHTML='<div class="hist-empty">Sin incidentes registrados.</div>';return;}
   list.innerHTML='';
@@ -666,6 +741,9 @@ function renderIncHistorial(){
   });
 }
 
+// Δ es distancia entre el modelo en caliente y el de la revisión en frío, no
+// gravedad: A->C y C->A devuelven ambos 2. El signo lo interpreta el operador.
+// V0-px 57729c74-341c-4b2d-a8e7-31aa9411e8e6
 function calcDelta(e){
   if(!e.modelo_caliente||!e.modelo_frio)return 0;
   const map={A:0,B:1,C:2};
