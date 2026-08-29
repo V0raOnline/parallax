@@ -1,6 +1,6 @@
 # 
 
-<img title="" src="Logo.png" alt="parallax logo" width="179" data-align="center">
+<img title="" src="ParallaxV2.png" alt="PARALLAX — consola de calibración" width="420" data-align="center">
 
 # parallax.exe
 
