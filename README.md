@@ -306,6 +306,9 @@ Desarrollado por [@V0raOnline](https://github.com/V0raOnline).
 
 Repositorio: [github.com/V0raOnline/parallax](https://github.com/V0raOnline/parallax)
 
+Esto es gratis y va a seguir siéndolo. Si te está sirviendo, puedes invitarme a un café en
+**[ko-fi.com/v0raonline](https://ko-fi.com/v0raonline)**.
+
 ---
 
 ## licencia
