@@ -33,6 +33,20 @@ el mismo sistema, no una sustitución.
 
 ---
 
+## capturas — v2
+
+| registro | bio | medición |
+|---|---|---|
+| ![registro v2](docs/v2-registro.png) | ![bio v2](docs/v2-bio.png) | ![medición v2](docs/v2-medicion.png) |
+
+| incidentes | historial | notas |
+|---|---|---|
+| ![incidentes v2](docs/v2-incidentes.png) | ![historial v2](docs/v2-historial.png) | ![notas v2](docs/v2-notas.png) |
+
+Los datos que aparecen en las capturas son de ejemplo, generados para la documentación.
+
+---
+
 ## capturas — v1
 
 | registro                       | estado                     | descomprimir                           |
