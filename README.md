@@ -12,7 +12,28 @@
 
 ---
 
-## capturas
+## dos versiones
+
+El repositorio publica dos aplicaciones. Las dos son un único archivo HTML, funcionan sin conexión y
+guardan los datos solo en tu dispositivo. **No comparten datos entre sí**: usan claves distintas de
+`localStorage`, así que puedes tener las dos abiertas sin que una pise a la otra.
+
+| | v1 | v2 |
+|---|---|---|
+| archivo | `parallax.html` | `parallaxv2.html` |
+| unidad de registro | el episodio | la calibración periódica |
+| exporta | un `.md` por evento | un ZIP con YAML por stream |
+| estado | congelada en la etiqueta `v1.0.0` | en desarrollo |
+
+`v0raonline.github.io/parallax` sirve la **v2**. La v1 sigue disponible en
+[`/parallax.html`](https://v0raonline.github.io/parallax/parallax.html) y no va a cambiar.
+
+Si vienes de la v1: no hay migración automática, y es a propósito. Son dos formas distintas de mirar
+el mismo sistema, no una sustitución.
+
+---
+
+## capturas — v1
 
 | registro                       | estado                     | descomprimir                           |
 | ------------------------------ | -------------------------- | -------------------------------------- |
@@ -63,6 +84,35 @@ Hay una ventana de tiempo — la Parallax window — para intentar resolver ante
 Lo que no cierra en diez minutos probablemente no cierra en cuarenta.
 
 Pero esto no es el final.
+
+---
+
+## qué añade la v2
+
+La v1 registra episodios. La v2 parte de una idea distinta: **un episodio se entiende mejor sobre un
+fondo**. Así que separa lo que la v1 mezclaba en un solo registro.
+
+**Calibración** — el snapshot periódico del sistema. Estado general, energía, fluidez mental,
+velocidad cognitiva, sueño, demandas del día, incidencias por subsistema y reguladores usados. No es
+un evento: es el fondo sobre el que los eventos ocurren.
+
+**Bio** — parámetros del organismo con su unidad, y el registro de medicación. Los parámetros los
+defines tú: peso, perímetros, tensión, pulso, o lo que estés observando. La unidad se guarda con cada
+medición, así que cambiarla mañana no reinterpreta el histórico. La cadencia también es tuya: nada es
+obligatorio y no hay huecos que rellenar.
+
+La medicación se registra como **intervalo**, no como evento: fecha de inicio y fecha de fin. Retirar
+un medicamento le pone fecha de fin en vez de borrarlo, porque la pregunta útil meses después es qué
+estabas tomando en una fecha concreta.
+
+**Incidentes** — el clasificador A/B/C de la v1, ahora como módulo propio y con revisión en frío: una
+reclasificación posterior y un campo de insight. La distancia entre el modelo en caliente y el de la
+revisión en frío se guarda como dato.
+
+**Notas** — texto libre con sello de fecha automático por entrada.
+
+**Historial** — las tres series juntas, sin gráficas, sin comparaciones y sin deltas. El sistema
+registra; la lectura es tuya.
 
 ---
 
@@ -126,13 +176,19 @@ Y si en algún momento el registro se convierte en vigilancia ansiosa de ti mism
 
 **Opción A — directamente en el navegador**
 
-Abre [v0raonline.github.io/parallax](https://v0raonline.github.io/parallax) en cualquier navegador.
+Abre [v0raonline.github.io/parallax](https://v0raonline.github.io/parallax) en cualquier navegador —
+sirve la v2. Para la v1, [`/parallax.html`](https://v0raonline.github.io/parallax/parallax.html).
 
 En móvil puedes añadirla a la pantalla de inicio y se comporta como una app nativa. En iOS: botón compartir → "Añadir a pantalla de inicio". En Android: menú del navegador → "Añadir a pantalla de inicio".
 
 **Opción B — descarga local**
 
-Descarga `parallax.html` y ábrelo con cualquier navegador. Sin instalación, sin dependencias.
+Descarga `parallaxv2.html` (o `parallax.html` para la v1) y ábrelo con cualquier navegador. Sin
+instalación, sin dependencias.
+
+Un aviso que importa: `localStorage` va por origen, y el nombre del archivo forma parte del origen.
+**Si renombras el archivo pierdes de vista los datos guardados con el nombre anterior.** Para uso
+real, mantén siempre el mismo nombre.
 
 Esta opción te da una copia propia que no cambia si el repositorio se actualiza.
 
@@ -168,6 +224,23 @@ parax_consulta_YYYYMMDD_HHMM.md → nota para sesión terapéutica
 parax_config.yaml               → configuración exportada
 ```
 
+**v2** — un único ZIP con los streams separados:
+
+```
+px2_export_YYYYMMDD.zip
+├── calibraciones/
+│   └── px2_YYYYMMDD_HHMM.yaml      → snapshot del sistema
+├── incidentes/
+│   └── px2_inc_YYYYMMDD_HHMM.yaml  → protocolo A/B/C + revisión en frío
+├── bio/
+│   ├── px2_bio_YYYYMMDD_HHMM.yaml  → medición: parámetros con valor y unidad
+│   └── medicacion.yaml             → regímenes con inicio y fin
+└── notas.md                        → texto libre con sello de fecha
+```
+
+En el panel de export del historial eliges qué streams incluir. También puedes exportar una
+calibración o un incidente sueltos en YAML desde su ficha.
+
 ---
 
 ## personalización
@@ -188,6 +261,11 @@ Los cambios se aplican inmediatamente y se guardan en el dispositivo. Si restaur
 
 Si necesitas cambiar los nombres de las categorías de señales o el comportamiento central del clasificador, está en el bloque `DEFAULT_CONFIG` al inicio del HTML. Está todo comentado.
 
+**En la v2**, la pestaña de ajustes configura las listas de demandas, reguladores y subsistemas, el
+timer de incidentes y los **parámetros bio**. Estos últimos piden dos cosas, nombre y unidad, porque
+un número sin unidad no es un dato: dentro de un año, `72` no dice si son kilos o libras. Añadir un
+parámetro nuevo —un perímetro de tobillo, por ejemplo— no requiere tocar el código.
+
 ---
 
 ## análisis de registros con LLM
@@ -200,7 +278,11 @@ El analizador trata los registros como logs de sistema — igual que se haría c
 
 **Lo que no hace:** diagnosticar, interpretar, concluir. Los datos son tuyos. La lectura también.
 
-Uso: copia el contenido del skill como system prompt y pega los archivos `.md` exportados como input.
+Lee los dos formatos: los `.md` de la v1 y los streams YAML de la v2. Con la v2 puede cruzar
+mediciones y calibraciones por fecha, y sabe qué medicación estaba vigente en la ventana analizada —
+pero tiene prohibido atribuirle a un fármaco cualquier variación observada. Contexto, no causa.
+
+Uso: copia el contenido del skill como system prompt y pega los archivos exportados como input.
 
 ---
 
