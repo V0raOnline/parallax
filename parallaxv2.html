@@ -51,7 +51,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100dvh;overflow-x:hidden;}
-.nav{display:flex;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;}
+.nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 9px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
 .nav-btn:hover{color:var(--text);}
 .nav-btn.active{color:var(--amber);border-bottom-color:var(--amber);}
@@ -186,6 +186,19 @@ option{background:var(--bg3);}
 .timer-display{font-size:28px;font-weight:700;color:var(--cyan);letter-spacing:.06em;font-family:var(--mono);}
 .timer-btn{padding:8px 14px;border-radius:var(--rs);border:1px solid var(--cyan);background:var(--cyan-dim);color:var(--cyan);font-family:var(--mono);font-size:11px;cursor:pointer;}
 .inc-hist-list{padding:0 18px;}
+.bio-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.bio-name{flex:1;font-size:12px;color:var(--muted);}
+.bio-input{width:92px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);color:var(--amber);font-family:var(--mono);font-size:16px;font-weight:700;padding:8px 10px;outline:none;text-align:center;}
+.bio-unit{width:42px;font-size:10px;color:var(--dim);letter-spacing:.06em;}
+.bio-hist-list{padding:0 18px;}
+.bio-hist-entry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px;}
+.bio-val{display:inline-block;margin-right:14px;font-size:11px;color:var(--muted);line-height:1.9;}
+.bio-val b{color:var(--amber);font-weight:700;}
+.med-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px;cursor:pointer;transition:border-color .15s;}
+.med-card.off{opacity:.5;}
+.med-name{font-size:13px;font-weight:700;color:var(--text);}
+.med-pos{font-size:11px;color:var(--muted);margin-top:6px;}
+.med-meta{font-size:10px;color:var(--dim);margin-top:6px;letter-spacing:.06em;}
 .inc-hist-entry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px;cursor:pointer;transition:border-color .15s;}
 .inc-hist-entry:hover{border-color:var(--amber);}
 .inc-hist-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
@@ -216,6 +229,7 @@ option{background:var(--bg3);}
 
 <nav class="nav">
   <button class="nav-btn active" id="nav-registro" onclick="showView('registro')"><span class="nav-icon">⊕</span>registro</button>
+  <button class="nav-btn" id="nav-bio" onclick="showView('bio')"><span class="nav-icon">◈</span>bio</button>
   <button class="nav-btn" id="nav-incidentes" onclick="showView('incidentes')"><span class="nav-icon">⚡</span>incidentes</button>
   <button class="nav-btn" id="nav-notas" onclick="showView('notas')"><span class="nav-icon">✎</span>notas</button>
   <button class="nav-btn" id="nav-historial" onclick="showView('historial')"><span class="nav-icon">≡</span>historial</button>
@@ -249,13 +263,6 @@ option{background:var(--bg3);}
           <div class="vital-block"><div class="vital-label">diurno (h)</div><input class="vital-input" id="sueno-diur" type="number" min="0" max="12" step="0.5" placeholder="—"></div>
         </div>
       </div>
-      <div class="section"><div class="sect-label">signos vitales (opcional)</div>
-        <div class="vitals-row">
-          <div class="vital-block"><div class="vital-label">SYS</div><input class="vital-input" id="vital-sys" type="number" min="60" max="220" placeholder="—"></div>
-          <div class="vital-block"><div class="vital-label">DIA</div><input class="vital-input" id="vital-dia" type="number" min="40" max="140" placeholder="—"></div>
-          <div class="vital-block"><div class="vital-label">PULSO</div><input class="vital-input" id="vital-pulso" type="number" min="30" max="220" placeholder="—"></div>
-        </div>
-      </div>
       <div class="nav-row"><button class="btn-next" onclick="goScreen(2)">Continuar →</button></div>
     </div>
     <div id="screen-2" style="display:none;">
@@ -281,6 +288,62 @@ option{background:var(--bg3);}
     <div id="screen-ok" style="display:none;padding:40px 18px;">
       <div class="sys-msg"><div class="sys-msg-title">// sistema</div><div class="sys-msg-body" id="sys-msg-text"></div></div>
       <button class="btn-next" style="width:100%;margin-top:12px;" onclick="backToSplash()">Nueva calibración</button>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-bio">
+  <div id="bio-splash">
+    <div class="screen-head"><div class="screen-label">parámetros del organismo</div><div class="screen-title">Organismo</div><div class="screen-sub">Dato crudo. Sin comparación ni tendencia.</div></div>
+    <div style="padding:0 18px 20px;">
+      <button class="btn-next" style="width:100%;" onclick="startBio()">Registrar medición</button>
+    </div>
+    <div class="screen-head" style="padding-top:0;"><div class="screen-label">vigente</div><div class="screen-title" style="font-size:14px;">Medicación</div></div>
+    <div style="padding:0 18px 14px;">
+      <div id="med-activos"></div>
+      <button class="btn-sm" style="width:100%;margin-top:8px;" onclick="openMed(null)">+ añadir medicamento</button>
+    </div>
+    <div class="export-toggle" onclick="toggleMedOff()">
+      <span class="export-toggle-label">▶ retirados</span>
+      <span class="export-toggle-arrow" id="med-off-arrow">▶</span>
+    </div>
+    <div class="export-panel" id="med-off-panel"><div id="med-retirados"></div></div>
+  </div>
+
+  <div id="bio-flow" style="display:none;">
+    <div class="screen-head"><div class="screen-label">medición</div><div class="screen-title">Registrar medición</div><div class="screen-sub">Rellena solo lo que hayas medido. Nada es obligatorio.</div></div>
+    <div class="section"><div id="bio-fields"></div></div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="backToBioSplash()">← Atrás</button>
+      <button class="btn-save" onclick="saveBio()">Guardar</button>
+    </div>
+  </div>
+
+  <div id="med-flow" style="display:none;">
+    <div class="screen-head"><div class="screen-label">medicación</div><div class="screen-title" id="med-title">Medicamento</div></div>
+    <div class="section">
+      <div class="sect-label">nombre</div>
+      <input class="fi" id="med-nombre" type="text" style="min-height:0;" placeholder="nombre del medicamento">
+    </div>
+    <div class="section">
+      <div class="sect-label">posología</div>
+      <input class="fi" id="med-posologia" type="text" style="min-height:0;" placeholder="p. ej. 1 comprimido cada 12 h">
+    </div>
+    <div class="section">
+      <div class="sect-label">periodo</div>
+      <div class="vitals-row">
+        <div class="vital-block"><div class="vital-label">inicio</div><input class="fi" id="med-inicio" type="date" style="min-height:0;"></div>
+        <div class="vital-block"><div class="vital-label">fin · vacío = activo</div><input class="fi" id="med-fin" type="date" style="min-height:0;"></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="sect-label">notas · efectos</div>
+      <textarea class="fi" id="med-notas" style="min-height:140px;line-height:1.7;" placeholder="se sella la fecha al entrar…"></textarea>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="backToBioSplash()">← Atrás</button>
+      <button class="btn-sm" id="med-del" onclick="deleteMed()" style="border-color:var(--dim);background:transparent;color:var(--dim);">borrar</button>
+      <button class="btn-save" onclick="saveMed()">Guardar</button>
     </div>
   </div>
 </div>
@@ -352,6 +415,10 @@ option{background:var(--bg3);}
         <span class="export-check-label">incidentes</span>
       </label>
       <label class="export-check-item">
+        <input type="checkbox" id="exp-bio" checked>
+        <span class="export-check-label">bio</span>
+      </label>
+      <label class="export-check-item">
         <input type="checkbox" id="exp-notas" checked>
         <span class="export-check-label">notas</span>
       </label>
@@ -362,6 +429,8 @@ option{background:var(--bg3);}
   <div class="hist-list" id="hist-list"></div>
   <div class="screen-head" style="padding-top:28px;"><div class="screen-label">incidentes</div><div class="screen-title" style="font-size:14px;">Historial de incidentes</div></div>
   <div class="inc-hist-list" id="inc-hist-list"></div>
+  <div class="screen-head" style="padding-top:28px;"><div class="screen-label">mediciones</div><div class="screen-title" style="font-size:14px;">Registro biométrico</div></div>
+  <div class="bio-hist-list" id="bio-hist-list"></div>
 </div>
 
 <div class="view" id="view-ajustes">
@@ -369,6 +438,7 @@ option{background:var(--bg3);}
   <div class="cfg-section"><div class="cfg-title">demandas</div><div class="cfg-list" id="cfg-demandas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-demanda" type="text" placeholder="nueva demanda…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('demandas','inp-demanda')">+ añadir</button></div></div>
   <div class="cfg-section"><div class="cfg-title">reguladores</div><div class="cfg-list" id="cfg-reguladores"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-regulador" type="text" placeholder="nuevo regulador…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('reguladores','inp-regulador')">+ añadir</button></div></div>
   <div class="cfg-section"><div class="cfg-title">subsistemas</div><div class="cfg-list" id="cfg-subsistemas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-subsistema" type="text" placeholder="nuevo subsistema…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('subsistemas','inp-subsistema')">+ añadir</button></div></div>
+  <div class="cfg-section"><div class="cfg-title">parámetros bio</div><div class="cfg-list" id="cfg-bio"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-bio-nombre" type="text" placeholder="parámetro" style="min-width:0;"><input class="cfg-input" id="inp-bio-unidad" type="text" placeholder="unidad" style="flex:0 0 62px;min-width:0;"><button class="btn-sm" onclick="addBioParam()">+</button></div></div>
   <div class="cfg-section"><div class="cfg-title">timer incidentes (minutos)</div>
     <div style="padding:0 0 12px;display:flex;align-items:center;gap:12px;">
       <input type="range" id="cfg-timer" min="1" max="30" value="10" style="flex:1;accent-color:var(--amber);" oninput="updateTimerCfg(this.value)">
@@ -405,7 +475,7 @@ const SYS_MSGS=["Calibración registrada.\n\nEl sistema sigue haciendo cosas de 
 // se sirven desde el mismo origen y compartir clave hace que abrir una pise el
 // registro de la otra. localStorage es por origen, así que renombrar el fichero
 // equivale a empezar de cero. V0-px 57729c74-341c-4b2d-a8e7-31aa9411e8e6
-function getCfg(){try{const c=JSON.parse(localStorage.getItem("px2_cfg")||"{}");return{demandas:c.demandas||DEFAULT_CFG.demandas.slice(),reguladores:c.reguladores||DEFAULT_CFG.reguladores.slice(),subsistemas:c.subsistemas||DEFAULT_CFG.subsistemas.slice()};}catch(e){return{demandas:DEFAULT_CFG.demandas.slice(),reguladores:DEFAULT_CFG.reguladores.slice(),subsistemas:DEFAULT_CFG.subsistemas.slice()};}}
+function getCfg(){try{const c=JSON.parse(localStorage.getItem("px2_cfg")||"{}");return{demandas:c.demandas||DEFAULT_CFG.demandas.slice(),reguladores:c.reguladores||DEFAULT_CFG.reguladores.slice(),subsistemas:c.subsistemas||DEFAULT_CFG.subsistemas.slice(),bio:c.bio||cloneBio()};}catch(e){return{demandas:DEFAULT_CFG.demandas.slice(),reguladores:DEFAULT_CFG.reguladores.slice(),subsistemas:DEFAULT_CFG.subsistemas.slice(),bio:cloneBio()};}}
 function saveCfg(c){localStorage.setItem("px2_cfg",JSON.stringify(c));}
 function getLog(){try{return JSON.parse(localStorage.getItem("px2_log")||"[]");}catch(e){return[];}}
 function saveLog(l){localStorage.setItem("px2_log",JSON.stringify(l));}
@@ -428,8 +498,8 @@ function renderIncidencias(){const list=document.getElementById("inc-list");if(!
 function setIncSub(idx,v){calState.incidencias[idx].subsistema=v;}
 function setIncEvt(idx,v){calState.incidencias[idx].evento=v;}
 function setIncInt(idx,v){calState.incidencias[idx].intensidad=v;renderIncidencias();}
-function saveCalibration(){calState.sensacion=document.getElementById("sensacion").value.trim();calState.observaciones=document.getElementById("observaciones").value.trim();calState.sueno_noc=parseFloat(document.getElementById("sueno-noc").value)||null;calState.sueno_diur=parseFloat(document.getElementById("sueno-diur").value)||null;calState.sys=parseInt(document.getElementById("vital-sys").value)||null;calState.dia=parseInt(document.getElementById("vital-dia").value)||null;calState.pulso=parseInt(document.getElementById("vital-pulso").value)||null;let entry;const log=getLog();if(editIdx!==null){entry={...calState,ts:log[editIdx].ts};log[editIdx]=entry;editIdx=null;}else{entry={...calState,ts:Date.now()};log.unshift(entry);}saveLog(log);downloadYAML(buildYAML(entry),buildFilename(entry));for(let i=1;i<=5;i++)document.getElementById("screen-"+i).style.display="none";document.getElementById("screen-ok").style.display="block";document.getElementById("sys-msg-text").textContent=SYS_MSGS[Math.floor(Math.random()*SYS_MSGS.length)];document.getElementById("progress-bar").innerHTML="";window.scrollTo(0,0);}
-function buildYAML(e){const d=new Date(e.ts);const pad=n=>String(n).padStart(2,"0");const fecha=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;const hora=`${pad(d.getHours())}:${pad(d.getMinutes())}`;const demItems=Object.entries(e.demanda).map(([k,v])=>`    ${k}: ${v}`).join("\n")||"    ninguna: null";const incItems=e.incidencias.length?e.incidencias.map(i=>`    - subsistema: ${i.subsistema||"sin_definir"}\n      evento: ${i.evento||"sin_definir"}\n      intensidad: ${i.intensidad??null}`).join("\n"):"    []";const regItems=Object.entries(e.reguladores).map(([k,v])=>`    ${k}: ${v||"si"}`).join("\n")||"    ninguno: null";return `calibracion:\n\n  fecha: ${fecha}\n  hora: "${hora}"\n\n  estado:\n\n    estado_general: ${e.estado_general??null}\n\n    energia: ${e.energia??null}\n    fluidez_mental: ${e.fluidez??null}\n    velocidad_cognitiva: ${e.velocidad??null}\n\n    sensacion_general: "${(e.sensacion||"").replace(/"/g,"'")  }"\n\n  sueno:\n\n    nocturno_horas: ${e.sueno_noc??null}\n    diurno_horas: ${e.sueno_diur??null}\n\n  signos_vitales:\n\n    sistolica: ${e.sys??null}\n    diastolica: ${e.dia??null}\n    pulso: ${e.pulso??null}\n\n  demanda:\n\n${demItems}\n\n  incidencias:\n\n${incItems}\n\n  reguladores:\n\n${regItems}\n\n  observaciones: >\n    ${(e.observaciones||"").replace(/\n/g,"\n    ")}\n`;}
+function saveCalibration(){calState.sensacion=document.getElementById("sensacion").value.trim();calState.observaciones=document.getElementById("observaciones").value.trim();calState.sueno_noc=parseFloat(document.getElementById("sueno-noc").value)||null;calState.sueno_diur=parseFloat(document.getElementById("sueno-diur").value)||null;["sys","dia","pulso"].forEach(k=>{const el=document.getElementById("vital-"+k);if(el)calState[k]=parseInt(el.value)||null;});let entry;const log=getLog();if(editIdx!==null){entry={...calState,ts:log[editIdx].ts};log[editIdx]=entry;editIdx=null;}else{entry={...calState,ts:Date.now()};log.unshift(entry);}saveLog(log);downloadYAML(buildYAML(entry),buildFilename(entry));for(let i=1;i<=5;i++)document.getElementById("screen-"+i).style.display="none";document.getElementById("screen-ok").style.display="block";document.getElementById("sys-msg-text").textContent=SYS_MSGS[Math.floor(Math.random()*SYS_MSGS.length)];document.getElementById("progress-bar").innerHTML="";window.scrollTo(0,0);}
+function buildYAML(e){const d=new Date(e.ts);const pad=n=>String(n).padStart(2,"0");const vitBlock=(e.sys||e.dia||e.pulso)?`\n\n  signos_vitales:\n\n    sistolica: ${e.sys??null}\n    diastolica: ${e.dia??null}\n    pulso: ${e.pulso??null}`:"";const fecha=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;const hora=`${pad(d.getHours())}:${pad(d.getMinutes())}`;const demItems=Object.entries(e.demanda).map(([k,v])=>`    ${k}: ${v}`).join("\n")||"    ninguna: null";const incItems=e.incidencias.length?e.incidencias.map(i=>`    - subsistema: ${i.subsistema||"sin_definir"}\n      evento: ${i.evento||"sin_definir"}\n      intensidad: ${i.intensidad??null}`).join("\n"):"    []";const regItems=Object.entries(e.reguladores).map(([k,v])=>`    ${k}: ${v||"si"}`).join("\n")||"    ninguno: null";return `calibracion:\n\n  fecha: ${fecha}\n  hora: "${hora}"\n\n  estado:\n\n    estado_general: ${e.estado_general??null}\n\n    energia: ${e.energia??null}\n    fluidez_mental: ${e.fluidez??null}\n    velocidad_cognitiva: ${e.velocidad??null}\n\n    sensacion_general: "${(e.sensacion||"").replace(/"/g,"'")  }"\n\n  sueno:\n\n    nocturno_horas: ${e.sueno_noc??null}\n    diurno_horas: ${e.sueno_diur??null}${vitBlock}\n\n  demanda:\n\n${demItems}\n\n  incidencias:\n\n${incItems}\n\n  reguladores:\n\n${regItems}\n\n  observaciones: >\n    ${(e.observaciones||"").replace(/\n/g,"\n    ")}\n`;}
 function buildFilename(e){const d=new Date(e.ts);const pad=n=>String(n).padStart(2,"0");return`px2_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}.yaml`;}
 function downloadYAML(yaml,fname){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([yaml],{type:"text/yaml"}));a.download=fname;a.click();URL.revokeObjectURL(a.href);}
 function exportAllYAML(){const log=getLog();if(!log.length){alert("No hay calibraciones registradas.");return;}downloadYAML(log.map(e=>buildYAML(e)).join("\n---\n\n"),"px2_export_completo.yaml");}
@@ -439,7 +509,7 @@ function openModal(idx){modalIdx=idx;const e=getLog()[idx];const d=new Date(e.ts
 document.getElementById("modal-edit-btn").onclick=()=>{closeModalDirect();editCalibration(modalIdx);};document.getElementById("modal-overlay").classList.add("open");}
 function closeModal(e){if(e.target===document.getElementById("modal-overlay"))closeModalDirect();}
 function closeModalDirect(){document.getElementById("modal-overlay").classList.remove("open");}
-function renderAjustes(){const cfg=getCfg();["demandas","reguladores","subsistemas"].forEach(key=>{const el=document.getElementById("cfg-"+key);if(!el)return;el.innerHTML=cfg[key].map((t,i)=>`<div class="cfg-tag"><span>${t}</span><button class="cfg-tag-del" onclick="removeCfgItem('${key}',${i})">×</button></div>`).join("");});}
+function renderAjustes(){const cfg=getCfg();["demandas","reguladores","subsistemas"].forEach(key=>{const el=document.getElementById("cfg-"+key);if(!el)return;el.innerHTML=cfg[key].map((t,i)=>`<div class="cfg-tag"><span>${t}</span><button class="cfg-tag-del" onclick="removeCfgItem('${key}',${i})">×</button></div>`).join("");});renderBioCfg();}
 const NOTA_SEP="· · · · · · · · · · · · · · · ·";
 const NOTA_STAMP_RE=/^\[(?:\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2}) \d{2}:\d{2}\]$/gm;
 function notaStamp(){
@@ -455,17 +525,18 @@ function notaTailEmpty(txt){
   const[,end]=notaLastStampIdx(txt);
   return end<0?txt.trim()==="":txt.slice(end).trim()==="";
 }
-function stampNotas(){
-  const ta=document.getElementById("notas-content");if(!ta)return;
+function stampNotes(ta,save){
+  if(!ta)return;
   const txt=ta.value;
   const toEnd=()=>{setTimeout(()=>{const n=ta.value.length;ta.setSelectionRange(n,n);ta.scrollTop=ta.scrollHeight;},0);};
   if(txt.trim()===""){ta.value=notaStamp()+"\n\n";}
   else if(notaTailEmpty(txt)){toEnd();return;}
   else{ta.value=txt.replace(/\s+$/,"")+"\n\n"+NOTA_SEP+"\n"+notaStamp()+"\n\n";}
-  localStorage.setItem("px2_notas",ta.value);toEnd();showNotasStatus();
+  if(save)save(ta.value);
+  toEnd();
 }
-function trimNotasStamp(){
-  const ta=document.getElementById("notas-content");if(!ta)return;
+function trimStampedNotes(ta,save){
+  if(!ta)return;
   const txt=ta.value;
   if(!notaTailEmpty(txt))return;
   const[idx]=notaLastStampIdx(txt);
@@ -473,7 +544,15 @@ function trimNotasStamp(){
   let head=txt.slice(0,idx).replace(/\s+$/,"");
   if(head.endsWith(NOTA_SEP))head=head.slice(0,-NOTA_SEP.length).replace(/\s+$/,"");
   ta.value=head;
-  localStorage.setItem("px2_notas",head);
+  if(save)save(head);
+}
+// El sellado se ata por elemento y no por id porque hay dos textareas con este
+// comportamiento: las notas libres y las de cada medicamento. Los manejadores van
+// envueltos en flechas porque onfocus recibe el Event como primer argumento y
+// pisaria el parametro ta.
+function bindStampedNotes(ta,save){
+  ta.onfocus=()=>stampNotes(ta,save);
+  ta.onblur=()=>trimStampedNotes(ta,save);
 }
 function initNotas(){
   const content=localStorage.getItem("px2_notas")||"";
@@ -481,8 +560,7 @@ function initNotas(){
   if(ta){
     ta.value=content;
     ta.oninput=()=>{localStorage.setItem("px2_notas",ta.value);showNotasStatus();};
-    ta.onfocus=stampNotas;
-    ta.onblur=trimNotasStamp;
+    bindStampedNotes(ta,v=>{localStorage.setItem("px2_notas",v);showNotasStatus();});
   }
 }
 function showNotasStatus(){
@@ -513,8 +591,9 @@ function toggleExportPanel(){
 function exportZIP(){
   const expCal=document.getElementById('exp-cal').checked;
   const expInc=document.getElementById('exp-inc').checked;
+  const expBio=document.getElementById('exp-bio').checked;
   const expNotas=document.getElementById('exp-notas').checked;
-  if(!expCal&&!expInc&&!expNotas){alert('Selecciona al menos un tipo.');return;}
+  if(!expCal&&!expInc&&!expBio&&!expNotas){alert('Selecciona al menos un tipo.');return;}
 
   const btn=document.querySelector('.btn-export');
   btn.disabled=true;btn.textContent='generando...';
@@ -538,6 +617,12 @@ function exportZIP(){
       const fname=buildIncFilename(e);
       folder.file(fname,buildIncYAML(e));
     });
+  }
+
+  if(expBio){
+    const folder=zip.folder('bio');
+    getBioLog().forEach(e=>{folder.file(buildBioFilename(e),buildBioYAML(e));});
+    folder.file('medicacion.yaml',buildMedYAML());
   }
 
   if(expNotas){
@@ -592,10 +677,11 @@ function showView(v){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('nav-'+v).classList.add('active');
   if(v==='registro'){document.getElementById('splash').style.display='block';document.getElementById('cal-flow').style.display='none';}
-  if(v==='historial'){renderHistorial();renderIncHistorial();}
+  if(v==='historial'){renderHistorial();renderIncHistorial();renderBioHistorial();}
   if(v==='ajustes'){renderAjustes();initAjustesTimer();}
   if(v==='notas')initNotas();
   if(v==='incidentes')backToIncSplash();
+  if(v==='bio')backToBioSplash();
 }
 
 function initAjustesTimer(){
@@ -842,9 +928,7 @@ function editCalibration(idx){
   document.getElementById("observaciones").value=calState.observaciones;
   document.getElementById("sueno-noc").value=calState.sueno_noc||""
   document.getElementById("sueno-diur").value=calState.sueno_diur||"";
-  document.getElementById("vital-sys").value=calState.sys||"";
-  document.getElementById("vital-dia").value=calState.dia||"";
-  document.getElementById("vital-pulso").value=calState.pulso||"";
+  ["sys","dia","pulso"].forEach(k=>{const el=document.getElementById("vital-"+k);if(el)el.value=calState[k]||"";});
   initEstadoGeneral();
   initScale("sc-energia",10,"energia","amber");
   initScale("sc-fluidez",10,"fluidez","cyan");
@@ -853,6 +937,234 @@ function editCalibration(idx){
   // update save button label
   document.querySelector(".btn-save").textContent="Guardar cambios";
   window.scrollTo(0,0);
+}
+
+// ── BIO / ORGANISMO ──
+// La unidad se guarda dentro de cada medicion y no solo en la configuracion. Si
+// algun dia se cambia la unidad de un parametro, los registros viejos conservan
+// la suya en vez de reinterpretarse en silencio con la nueva.
+const DEFAULT_BIO=[
+  {nombre:"peso",unidad:"kg"},
+  {nombre:"perímetro abdominal",unidad:"cm"},
+  {nombre:"perímetro muslo izq",unidad:"cm"},
+  {nombre:"perímetro muslo der",unidad:"cm"},
+  {nombre:"tensión sistólica",unidad:"mmHg"},
+  {nombre:"tensión diastólica",unidad:"mmHg"},
+  {nombre:"pulso",unidad:"bpm"}
+];
+function cloneBio(){return DEFAULT_BIO.map(p=>({nombre:p.nombre,unidad:p.unidad}));}
+function getBioLog(){try{return JSON.parse(localStorage.getItem("px2_bio")||"[]");}catch(e){return[];}}
+function saveBioLog(l){localStorage.setItem("px2_bio",JSON.stringify(l));}
+function getMedLog(){try{return JSON.parse(localStorage.getItem("px2_med")||"[]");}catch(e){return[];}}
+function saveMedLog(l){localStorage.setItem("px2_med",JSON.stringify(l));}
+
+function bioFecha(ts){const d=new Date(ts);const pad=n=>String(n).padStart(2,"0");return`${pad(d.getDate())}-${pad(d.getMonth()+1)}-${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;}
+function fechaCorta(iso){if(!iso)return null;const p=iso.split("-");return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:iso;}
+
+// ── captura de medicion ──
+function renderBioFields(){
+  const cont=document.getElementById("bio-fields");
+  if(!cont)return;
+  const params=getCfg().bio;
+  if(!params.length){cont.innerHTML='<div class="hist-empty">Sin parámetros configurados.\n\nAñádelos desde ajustes.</div>';return;}
+  cont.innerHTML=params.map((p,i)=>
+    `<div class="bio-row"><span class="bio-name">${p.nombre}</span>`+
+    `<input class="bio-input" id="bio-in-${i}" type="number" step="any" inputmode="decimal" placeholder="—">`+
+    `<span class="bio-unit">${p.unidad}</span></div>`).join("");
+}
+function startBio(){
+  document.getElementById("bio-splash").style.display="none";
+  document.getElementById("med-flow").style.display="none";
+  document.getElementById("bio-flow").style.display="block";
+  renderBioFields();
+  window.scrollTo(0,0);
+}
+function backToBioSplash(){
+  document.getElementById("bio-flow").style.display="none";
+  document.getElementById("med-flow").style.display="none";
+  document.getElementById("bio-splash").style.display="block";
+  renderMedicacion();
+  window.scrollTo(0,0);
+}
+function saveBio(){
+  const params=getCfg().bio;
+  const valores={};
+  params.forEach((p,i)=>{
+    const el=document.getElementById("bio-in-"+i);
+    if(!el)return;
+    const raw=el.value.trim();
+    if(raw==="")return;
+    const v=parseFloat(raw);
+    if(isNaN(v))return;
+    valores[p.nombre]={v:v,u:p.unidad};
+  });
+  if(!Object.keys(valores).length){alert("No has introducido ningún valor.");return;}
+  const log=getBioLog();
+  log.unshift({ts:Date.now(),valores:valores});
+  saveBioLog(log);
+  backToBioSplash();
+}
+
+// ── medicacion ──
+let medEditId=null;
+function renderMedicacion(){
+  const log=getMedLog();
+  const act=document.getElementById("med-activos");
+  const ret=document.getElementById("med-retirados");
+  if(!act||!ret)return;
+  const activos=log.filter(m=>!m.fin);
+  const retirados=log.filter(m=>m.fin);
+  const card=m=>`<div class="med-card${m.fin?" off":""}" onclick="openMed('${m.id}')">`+
+    `<div class="med-name">${m.nombre||"(sin nombre)"}</div>`+
+    (m.posologia?`<div class="med-pos">${m.posologia}</div>`:"")+
+    `<div class="med-meta">desde ${fechaCorta(m.inicio)||"—"}${m.fin?" · hasta "+fechaCorta(m.fin):""}</div></div>`;
+  act.innerHTML=activos.length?activos.map(card).join(""):'<div class="hist-empty" style="padding:24px 0;">Sin medicación activa.</div>';
+  ret.innerHTML=retirados.length?retirados.map(card).join(""):'<div class="hist-empty" style="padding:24px 0;">Ninguno retirado.</div>';
+}
+function toggleMedOff(){
+  const p=document.getElementById("med-off-panel");
+  const a=document.getElementById("med-off-arrow");
+  p.classList.toggle("open");
+  a.textContent=p.classList.contains("open")?"▼":"▶";
+}
+function openMed(id){
+  medEditId=id;
+  const m=id?getMedLog().find(x=>x.id===id):null;
+  document.getElementById("med-title").textContent=m?"Editar medicamento":"Nuevo medicamento";
+  document.getElementById("med-nombre").value=m?m.nombre||"":"";
+  document.getElementById("med-posologia").value=m?m.posologia||"":"";
+  document.getElementById("med-inicio").value=m?m.inicio||"":"";
+  document.getElementById("med-fin").value=m&&m.fin?m.fin:"";
+  const ta=document.getElementById("med-notas");
+  ta.value=m?m.notas||"":"";
+  bindStampedNotes(ta,null);
+  document.getElementById("med-del").style.display=m?"block":"none";
+  document.getElementById("bio-splash").style.display="none";
+  document.getElementById("bio-flow").style.display="none";
+  document.getElementById("med-flow").style.display="block";
+  window.scrollTo(0,0);
+}
+function saveMed(){
+  const nombre=document.getElementById("med-nombre").value.trim();
+  if(!nombre){alert("El medicamento necesita un nombre.");return;}
+  const datos={
+    nombre:nombre,
+    posologia:document.getElementById("med-posologia").value.trim(),
+    inicio:document.getElementById("med-inicio").value||null,
+    fin:document.getElementById("med-fin").value||null,
+    notas:document.getElementById("med-notas").value
+  };
+  const log=getMedLog();
+  if(medEditId){
+    const i=log.findIndex(x=>x.id===medEditId);
+    if(i>=0)log[i]=Object.assign(log[i],datos);
+  }else{
+    datos.id="m"+Date.now().toString(36);
+    log.unshift(datos);
+  }
+  saveMedLog(log);
+  medEditId=null;
+  backToBioSplash();
+}
+// Retirar un medicamento le pone fecha de fin; borrarlo es otra cosa y se avisa.
+// Sin el registro del periodo se pierde la respuesta a "que tomaba en marzo",
+// que es justo para lo que sirve guardar las fechas.
+function deleteMed(){
+  if(!medEditId)return;
+  if(!confirm("¿Borrar este medicamento del registro? Se pierde su historial.\n\nPara retirarlo sin perderlo, ponle fecha de fin."))return;
+  saveMedLog(getMedLog().filter(x=>x.id!==medEditId));
+  medEditId=null;
+  backToBioSplash();
+}
+
+// ── historial biometrico ──
+function renderBioHistorial(){
+  const list=document.getElementById("bio-hist-list");
+  if(!list)return;
+  const log=getBioLog();
+  if(!log.length){list.innerHTML='<div class="hist-empty">Sin mediciones registradas.</div>';return;}
+  list.innerHTML=log.map(e=>{
+    const vals=Object.entries(e.valores||{}).map(([k,o])=>
+      `<span class="bio-val">${k} <b>${o.v}</b> ${o.u}</span>`).join("");
+    return`<div class="bio-hist-entry"><div class="med-meta">${bioFecha(e.ts)}</div><div style="margin-top:8px;">${vals}</div></div>`;
+  }).join("");
+}
+
+// ── export ──
+function buildBioFilename(e){const d=new Date(e.ts);const pad=n=>String(n).padStart(2,"0");return`px2_bio_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}.yaml`;}
+function buildBioYAML(e){
+  const d=new Date(e.ts);const pad=n=>String(n).padStart(2,"0");
+  const L=[];
+  L.push("medicion:");
+  L.push("");
+  L.push(`  fecha: ${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`);
+  L.push(`  hora: ${pad(d.getHours())}:${pad(d.getMinutes())}`);
+  L.push("");
+  L.push("  parametros:");
+  L.push("");
+  const ent=Object.entries(e.valores||{});
+  if(!ent.length)L.push("    ninguno: null");
+  ent.forEach(([k,o])=>{
+    L.push(`    - nombre: "${k}"`);
+    L.push(`      valor: ${o.v}`);
+    L.push(`      unidad: "${o.u}"`);
+  });
+  L.push("");
+  return L.join("\n");
+}
+function buildMedYAML(){
+  const log=getMedLog();
+  const L=[];
+  L.push("medicacion:");
+  L.push("");
+  if(!log.length){L.push("  ninguna: null");L.push("");return L.join("\n");}
+  log.forEach(m=>{
+    L.push(`  - nombre: "${(m.nombre||"").replace(/"/g,"'")}"`);
+    L.push(`    posologia: "${(m.posologia||"").replace(/"/g,"'")}"`);
+    L.push(`    inicio: ${m.inicio||"null"}`);
+    L.push(`    fin: ${m.fin||"null"}`);
+    L.push(`    activo: ${m.fin?"false":"true"}`);
+    const n=(m.notas||"").trim();
+    if(n){
+      L.push("    notas: |");
+      n.split("\n").forEach(line=>L.push("      "+line));
+    }else{
+      L.push("    notas: null");
+    }
+    L.push("");
+  });
+  return L.join("\n");
+}
+
+// ── configuracion de parametros ──
+function renderBioCfg(){
+  const el=document.getElementById("cfg-bio");
+  if(!el)return;
+  el.innerHTML=getCfg().bio.map((p,i)=>
+    `<div class="cfg-tag"><span>${p.nombre} <span style="color:var(--dim);">· ${p.unidad}</span></span>`+
+    `<button class="cfg-tag-del" onclick="removeBioParam(${i})">×</button></div>`).join("");
+}
+// Un parametro numerico necesita nombre y unidad. Un numero sin unidad en el
+// export es un huerfano: dentro de un ano "72" no dice si son kilos o libras.
+function addBioParam(){
+  const inN=document.getElementById("inp-bio-nombre");
+  const inU=document.getElementById("inp-bio-unidad");
+  const nombre=inN.value.trim().toLowerCase();
+  const unidad=inU.value.trim();
+  if(!nombre){alert("El parámetro necesita un nombre.");return;}
+  if(!unidad){alert("El parámetro necesita una unidad (kg, cm, mmHg…).");return;}
+  const cfg=getCfg();
+  if(cfg.bio.some(p=>p.nombre===nombre)){alert("Ese parámetro ya existe.");return;}
+  cfg.bio.push({nombre:nombre,unidad:unidad});
+  saveCfg(cfg);
+  inN.value="";inU.value="";
+  renderBioCfg();
+}
+function removeBioParam(idx){
+  const cfg=getCfg();
+  cfg.bio.splice(idx,1);
+  saveCfg(cfg);
+  renderBioCfg();
 }
 </script>
 </body>
