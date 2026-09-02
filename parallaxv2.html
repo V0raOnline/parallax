@@ -195,6 +195,14 @@ option{background:var(--bg3);}
 .bio-input{width:92px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);color:var(--amber);font-family:var(--mono);font-size:16px;font-weight:700;padding:8px 10px;outline:none;text-align:center;}
 .bio-unit{width:42px;font-size:10px;color:var(--dim);letter-spacing:.06em;}
 .bio-hist-list{padding:0 18px;}
+.hist-sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 18px 14px;cursor:pointer;user-select:none;}
+.hist-sec-head:active{opacity:.7;}
+.hist-sec-meta{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.hist-count{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);background:var(--amber-dim);border-radius:var(--rs);padding:2px 8px;min-width:22px;text-align:center;}
+.hist-count.cero{color:var(--dim);background:transparent;}
+.hist-sec-arrow{font-size:11px;color:var(--dim);}
+.hist-sec{display:none;}
+.hist-sec.open{display:block;}
 .bio-hist-entry{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:8px;}
 .bio-val{display:inline-block;margin-right:14px;font-size:11px;color:var(--muted);line-height:1.9;}
 .bio-val b{color:var(--amber);font-weight:700;}
@@ -429,12 +437,21 @@ option{background:var(--bg3);}
     </div>
     <button class="btn-export" onclick="exportZIP()">descargar ZIP</button>
   </div>
-  <div class="screen-head" style="padding-top:20px;"><div class="screen-label">calibraciones</div><div class="screen-title" style="font-size:14px;">Registro longitudinal</div></div>
-  <div class="hist-list" id="hist-list"></div>
-  <div class="screen-head" style="padding-top:28px;"><div class="screen-label">incidentes</div><div class="screen-title" style="font-size:14px;">Historial de incidentes</div></div>
-  <div class="inc-hist-list" id="inc-hist-list"></div>
-  <div class="screen-head" style="padding-top:28px;"><div class="screen-label">mediciones</div><div class="screen-title" style="font-size:14px;">Registro biométrico</div></div>
-  <div class="bio-hist-list" id="bio-hist-list"></div>
+  <div class="hist-sec-head" onclick="toggleHistSec('cal')">
+    <div><div class="screen-label">calibraciones</div><div class="screen-title" style="font-size:14px;">Registro longitudinal</div></div>
+    <div class="hist-sec-meta"><span class="hist-count" id="count-cal">0</span><span class="hist-sec-arrow" id="arrow-cal">▶</span></div>
+  </div>
+  <div class="hist-sec" id="sec-cal"><div class="hist-list" id="hist-list"></div></div>
+  <div class="hist-sec-head" onclick="toggleHistSec('inc')">
+    <div><div class="screen-label">incidentes</div><div class="screen-title" style="font-size:14px;">Historial de incidentes</div></div>
+    <div class="hist-sec-meta"><span class="hist-count" id="count-inc">0</span><span class="hist-sec-arrow" id="arrow-inc">▶</span></div>
+  </div>
+  <div class="hist-sec" id="sec-inc"><div class="inc-hist-list" id="inc-hist-list"></div></div>
+  <div class="hist-sec-head" onclick="toggleHistSec('bio')">
+    <div><div class="screen-label">mediciones</div><div class="screen-title" style="font-size:14px;">Registro biométrico</div></div>
+    <div class="hist-sec-meta"><span class="hist-count" id="count-bio">0</span><span class="hist-sec-arrow" id="arrow-bio">▶</span></div>
+  </div>
+  <div class="hist-sec" id="sec-bio"><div class="bio-hist-list" id="bio-hist-list"></div></div>
 </div>
 
 <div class="view" id="view-ajustes">
@@ -694,7 +711,7 @@ function showView(v){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('nav-'+v).classList.add('active');
   if(v==='registro'){document.getElementById('splash').style.display='block';document.getElementById('cal-flow').style.display='none';}
-  if(v==='historial'){renderHistorial();renderIncHistorial();renderBioHistorial();}
+  if(v==='historial'){renderHistorial();renderIncHistorial();renderBioHistorial();updateHistCounts();applyHistOpen();}
   if(v==='ajustes'){renderAjustes();initAjustesTimer();}
   if(v==='notas')initNotas();
   if(v==='incidentes')backToIncSplash();
@@ -1182,6 +1199,43 @@ function removeBioParam(idx){
   cfg.bio.splice(idx,1);
   saveCfg(cfg);
   renderBioCfg();
+}
+
+// ── SECCIONES PLEGABLES DEL HISTORIAL ──
+// El estado se recuerda porque replegar tres secciones en cada visita es peor que
+// el scroll que esto viene a evitar. En la primera visita solo queda abierta la de
+// calibraciones: tres cabeceras vacias parecerian un historial sin datos.
+const HIST_SECS=['cal','inc','bio'];
+function getHistOpen(){
+  try{const v=JSON.parse(localStorage.getItem('px2_hist_open'));if(Array.isArray(v))return v;}catch(e){}
+  return ['cal'];
+}
+function toggleHistSec(k){
+  const abiertas=getHistOpen();
+  const i=abiertas.indexOf(k);
+  if(i>=0)abiertas.splice(i,1);else abiertas.push(k);
+  localStorage.setItem('px2_hist_open',JSON.stringify(abiertas));
+  applyHistOpen();
+}
+function applyHistOpen(){
+  const abiertas=getHistOpen();
+  HIST_SECS.forEach(k=>{
+    const sec=document.getElementById('sec-'+k);
+    const flecha=document.getElementById('arrow-'+k);
+    if(!sec||!flecha)return;
+    const abierta=abiertas.indexOf(k)>=0;
+    sec.classList.toggle('open',abierta);
+    flecha.textContent=abierta?'▼':'▶';
+  });
+}
+function updateHistCounts(){
+  const n={cal:getLog().length,inc:getIncLog().length,bio:getBioLog().length};
+  HIST_SECS.forEach(k=>{
+    const el=document.getElementById('count-'+k);
+    if(!el)return;
+    el.textContent=n[k];
+    el.classList.toggle('cero',n[k]===0);
+  });
 }
 </script>
 </body>
