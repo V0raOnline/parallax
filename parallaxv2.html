@@ -175,6 +175,15 @@ option{background:var(--bg3);}
 .modal-row-val{color:var(--text);font-weight:700;}
 .modal-yaml-btn{width:100%;padding:10px;border-radius:var(--r);border:1px solid var(--border2);background:var(--bg3);color:var(--muted);font-family:var(--mono);font-size:11px;cursor:pointer;margin-top:12px;letter-spacing:.08em;}
 .modal-yaml-btn:hover{border-color:var(--amber);color:var(--amber);}
+.onb-body{font-size:12px;color:var(--muted);line-height:1.8;white-space:pre-line;}
+.onb-nav{display:flex;justify-content:space-between;gap:8px;margin-top:22px;}
+.onb-btn{padding:9px 16px;border-radius:var(--r);border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:var(--mono);font-size:11px;cursor:pointer;letter-spacing:.06em;}
+.onb-btn:hover:not(:disabled){border-color:var(--amber);color:var(--amber);}
+.onb-btn:disabled{opacity:.35;cursor:default;}
+.onb-btn-primary{border-color:var(--amber);background:var(--amber-dim);color:var(--amber);}
+.onb-btn-primary:hover{background:var(--amber);color:var(--bg);}
+.onb-open-btn{margin-top:6px;padding:9px 16px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--muted);font-family:var(--mono);font-size:11px;cursor:pointer;letter-spacing:.06em;}
+.onb-open-btn:hover{border-color:var(--amber);color:var(--amber);}
 /* INCIDENTES */
 .inc-proto{padding:0 18px;}
 .proto-question{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:20px;font-weight:700;}
@@ -467,6 +476,7 @@ option{background:var(--bg3);}
     </div>
   </div>
   <div class="cfg-section"><div class="cfg-title">datos</div><button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);" onclick="exportAllYAML()">exportar todo como YAML</button></div>
+  <div class="cfg-section"><div class="cfg-title">introducción</div><button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);" onclick="showOnboarding()">ver introducción de nuevo</button></div>
 </div>
 
 <div class="view" id="view-about">
@@ -476,6 +486,7 @@ option{background:var(--bg3);}
     <div class="about-block"><div class="about-label">filosofía</div><div class="about-text">El dato pertenece al operador.<br>La observación es del operador.<br>La interpretación es del operador o del profesional que este designe.</div></div>
     <div class="about-block"><div class="about-label">datos</div><div class="about-text">Todo es local. Sin cuentas. Sin nube. Sin telemetría.<br>El YAML exportado es el formato principal.</div></div>
     <div class="about-block"><div class="about-label">versión</div><div class="about-text">PARALLAX v2 · POC<br>parallax.exe · V0ra · 2026</div></div>
+    <div class="about-block"><div class="about-label">introducción</div><div class="about-text">La presentación que aparece la primera vez sigue disponible.<br><button class="onb-open-btn" onclick="showOnboarding()">ver introducción</button></div></div>
     <!-- Enlace estatico a Ko-fi, sin widget ni script de terceros. La app promete
          que no manda nada a ningun sitio y eso tiene que seguir siendo verdad tambien
          en la pantalla que pide dinero. Un boton incrustado de la plataforma cargaria
@@ -542,7 +553,16 @@ let modalIdx=null;
 function openModal(idx){modalIdx=idx;const e=getLog()[idx];const d=new Date(e.ts);const pad=n=>String(n).padStart(2,"0");document.getElementById("modal-date").textContent=`${pad(d.getDate())}-${pad(d.getMonth()+1)}-${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;let html="";html+='<div class="modal-section"><div class="modal-sect-title">estado</div>';[["estado general",e.estado_general],["energía",e.energia],["fluidez mental",e.fluidez],["velocidad cognitiva",e.velocidad],["sensación",e.sensacion],["sueño nocturno",e.sueno_noc!=null?e.sueno_noc+"h":null],["sueño diurno",e.sueno_diur!=null?e.sueno_diur+"h":null]].forEach(([k,v])=>{if(v!=null&&v!=="")html+=`<div class="modal-row"><span class="modal-row-key">${k}</span><span class="modal-row-val">${v}</span></div>`;});html+="</div>";if(e.sys||e.dia||e.pulso){html+='<div class="modal-section"><div class="modal-sect-title">signos vitales</div>';if(e.sys)html+=`<div class="modal-row"><span class="modal-row-key">SYS / DIA</span><span class="modal-row-val">${e.sys} / ${e.dia??"—"}</span></div>`;if(e.pulso)html+=`<div class="modal-row"><span class="modal-row-key">pulso</span><span class="modal-row-val">${e.pulso}</span></div>`;html+="</div>";}const demE=Object.entries(e.demanda||{});if(demE.length){html+='<div class="modal-section"><div class="modal-sect-title">demanda</div>';demE.forEach(([k,v])=>html+=`<div class="modal-row"><span class="modal-row-key">${k}</span><span class="modal-row-val">${v}</span></div>`);html+="</div>";}if(e.incidencias&&e.incidencias.length){html+=`<div class="modal-section"><div class="modal-sect-title">incidencias (${e.incidencias.length})</div>`;e.incidencias.forEach(i=>html+=`<div class="modal-row"><span class="modal-row-key">${i.subsistema||"—"} · ${i.evento||"—"}</span><span class="modal-row-val">${i.intensidad??"—"}/10</span></div>`);html+="</div>";}const regE=Object.entries(e.reguladores||{});if(regE.length){html+='<div class="modal-section"><div class="modal-sect-title">reguladores</div>';regE.forEach(([k,v])=>html+=`<div class="modal-row"><span class="modal-row-key">${k}</span><span class="modal-row-val">${v||"✓"}</span></div>`);html+="</div>";}if(e.observaciones)html+=`<div class="modal-section"><div class="modal-sect-title">observaciones</div><div style="font-size:12px;color:var(--muted);line-height:1.7;padding:8px 0;">${e.observaciones}</div></div>`;document.getElementById("modal-body").innerHTML=html;document.getElementById("modal-yaml-btn").onclick=()=>{const entry=getLog()[modalIdx];downloadYAML(buildYAML(entry),buildFilename(entry));};
 document.getElementById("modal-edit-btn").onclick=()=>{closeModalDirect();editCalibration(modalIdx);};document.getElementById("modal-overlay").classList.add("open");}
 function closeModal(e){if(e.target===document.getElementById("modal-overlay"))closeModalDirect();}
-function closeModalDirect(){document.getElementById("modal-overlay").classList.remove("open");}
+function closeModalDirect(){
+  const overlay=document.getElementById("modal-overlay");
+  if(overlay.dataset.onboarding){
+    try{localStorage.setItem('px2_onboarded','1');}catch(e){}
+    const yb=document.getElementById('modal-yaml-btn');if(yb)yb.style.display='';
+    const eb=document.getElementById('modal-edit-btn');if(eb)eb.style.display='';
+    delete overlay.dataset.onboarding;
+  }
+  overlay.classList.remove("open");
+}
 function renderAjustes(){const cfg=getCfg();["demandas","reguladores","subsistemas"].forEach(key=>{const el=document.getElementById("cfg-"+key);if(!el)return;el.innerHTML=cfg[key].map((t,i)=>`<div class="cfg-tag"><span>${t}</span><button class="cfg-tag-del" onclick="removeCfgItem('${key}',${i})">×</button></div>`).join("");});renderBioCfg();}
 const NOTA_SEP="· · · · · · · · · · · · · · · ·";
 const NOTA_STAMP_RE=/^\[(?:\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2}) \d{2}:\d{2}\]$/gm;
@@ -1237,6 +1257,74 @@ function updateHistCounts(){
     el.classList.toggle('cero',n[k]===0);
   });
 }
+
+// Onboarding — se muestra la primera vez que se abre la app y desde el boton
+// "ver introducción" de about y ajustes. Cualquier cierre marca px2_onboarded
+// para no volver a mostrarlo. El AND con los logs vacios protege operadores
+// upgrade que ya usan v2 sin la flag nueva.
+const ONBOARDING_PAGES=[
+  {label:'Introducción · 1/4 · qué es esto',body:
+    'Parallax v2 es un instrumento. Registra, no interpreta.\n\n'+
+    'Estas pestañas cubren el instrumento entero:\n\n'+
+    'registro — calibración del estado del sistema.\n'+
+    'bio — mediciones biométricas y medicación.\n'+
+    'incidentes — sucesos que se revisan en frío.\n'+
+    'notas — texto libre, timestamp opcional.\n'+
+    'historial — todo lo registrado, en orden.\n'+
+    'ajustes — qué campos aparecen en cada formulario.\n'+
+    'about — quién firma esto.'},
+  {label:'Introducción · 2/4 · cómo se usa',body:
+    'El uso normal es breve.\n\n'+
+    'Se abre registro cuando toca calibrar y se guarda.\n'+
+    'Se abre incidentes cuando pasa algo que se querrá revisar mañana.\n'+
+    'Se abre bio cuando hay una medición.\n\n'+
+    'No hay recordatorios. No hay rachas. No avisa. Ese es el diseño.'},
+  {label:'Introducción · 3/4 · los datos',body:
+    'Todo vive en este navegador. Nada sale de aquí.\n\n'+
+    'El export es YAML por entrada y ZIP por lote, disponible en historial y ajustes.\n'+
+    'Borrar los datos también está en ajustes.\n\n'+
+    'Si se cambia de navegador o se limpia la caché del sitio, se pierde lo no exportado.'},
+  {label:'Introducción · 4/4 · antes de empezar',body:
+    'Ajustes ya trae listas por defecto: demandas, reguladores, subsistemas, parámetros bio.\n'+
+    'No hace falta tocar nada para empezar. Se editan a medida que aparezca lo que falta.\n\n'+
+    'Esta introducción sigue disponible en about y en ajustes.'}
+];
+let onbIdx=0;
+function showOnboarding(idx){
+  onbIdx=Math.max(0,Math.min(idx|0,ONBOARDING_PAGES.length-1));
+  const p=ONBOARDING_PAGES[onbIdx];
+  const isFirst=onbIdx===0;
+  const isLast=onbIdx===ONBOARDING_PAGES.length-1;
+  document.getElementById('modal-date').textContent=p.label;
+  const bodyEl=document.getElementById('modal-body');
+  bodyEl.innerHTML=
+    '<div class="onb-body"></div>'+
+    '<div class="onb-nav">'+
+      '<button class="onb-btn" '+(isFirst?'disabled':'')+' onclick="showOnboarding('+(onbIdx-1)+')">atrás</button>'+
+      (isLast
+        ? '<button class="onb-btn onb-btn-primary" onclick="closeModalDirect()">cerrar</button>'
+        : '<button class="onb-btn onb-btn-primary" onclick="showOnboarding('+(onbIdx+1)+')">siguiente</button>'
+      )+
+    '</div>';
+  bodyEl.querySelector('.onb-body').textContent=p.body;
+  const yb=document.getElementById('modal-yaml-btn');if(yb)yb.style.display='none';
+  const eb=document.getElementById('modal-edit-btn');if(eb)eb.style.display='none';
+  const overlay=document.getElementById('modal-overlay');
+  overlay.dataset.onboarding='1';
+  overlay.classList.add('open');
+  overlay.scrollTop=0;
+}
+function maybeShowOnboarding(){
+  try{
+    if(localStorage.getItem('px2_onboarded'))return;
+    if(localStorage.getItem('px2_log'))return;
+    if(localStorage.getItem('px2_inc_log'))return;
+    if(localStorage.getItem('px2_bio'))return;
+    if(localStorage.getItem('px2_notas'))return;
+  }catch(e){return;}
+  showOnboarding(0);
+}
+document.addEventListener('DOMContentLoaded',maybeShowOnboarding);
 </script>
 </body>
 </html>
