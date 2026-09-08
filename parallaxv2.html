@@ -49,6 +49,29 @@
   --mono:"JetBrains Mono",monospace;
   --r:6px;--rs:4px;
 }
+/* Paleta clara. Se aplica si data-theme="light" (override explicito), o si no
+   hay data-theme y el SO pide claro. Los valores estan duplicados a proposito:
+   CSS no permite alias entre bloques. Mantener sincronizado. */
+:root[data-theme="light"]{
+  --bg:#faf8f3;--bg2:#f2eee5;--bg3:#e9e4d7;--bg4:#ddd6c4;
+  --border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.30);
+  --text:#1a1815;--muted:#5a564e;--dim:#8a867d;
+  --amber:#8a4d00;--amber-dim:#f5e6c8;--amber-bright:#b8710a;
+  --cyan:#005555;--cyan-dim:#d0eaea;
+  --green:#146d33;--green-dim:#dcecdf;
+  --red:#a02a1c;--red-dim:#f0d8d3;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme]){
+    --bg:#faf8f3;--bg2:#f2eee5;--bg3:#e9e4d7;--bg4:#ddd6c4;
+    --border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.30);
+    --text:#1a1815;--muted:#5a564e;--dim:#8a867d;
+    --amber:#8a4d00;--amber-dim:#f5e6c8;--amber-bright:#b8710a;
+    --cyan:#005555;--cyan-dim:#d0eaea;
+    --green:#146d33;--green-dim:#dcecdf;
+    --red:#a02a1c;--red-dim:#f0d8d3;
+  }
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html,body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100dvh;overflow-x:hidden;}
 .nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;}
@@ -150,6 +173,10 @@ option{background:var(--bg3);}
 .cfg-input:focus{border-color:var(--amber);}
 .cfg-input::placeholder{color:var(--dim);}
 .btn-sm{padding:8px 12px;border-radius:var(--rs);border:1px solid var(--amber);background:var(--amber-dim);color:var(--amber);font-family:var(--mono);font-size:11px;cursor:pointer;white-space:nowrap;}
+.theme-row{display:flex;gap:6px;}
+.theme-btn{flex:1;padding:9px 6px;border-radius:var(--rs);border:1px solid var(--border2);background:var(--bg3);color:var(--muted);font-family:var(--mono);font-size:11px;cursor:pointer;letter-spacing:.06em;}
+.theme-btn:hover{color:var(--text);}
+.theme-btn.sel{background:var(--amber-dim);border-color:var(--amber);color:var(--amber);}
 .sys-msg{margin:0 18px 16px;padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);border-left:3px solid var(--cyan);}
 .sys-msg-title{font-size:9px;color:var(--cyan);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;}
 .sys-msg-body{font-size:12px;color:var(--muted);line-height:1.7;white-space:pre-line;}
@@ -473,6 +500,13 @@ option{background:var(--bg3);}
     <div style="padding:0 0 12px;display:flex;align-items:center;gap:12px;">
       <input type="range" id="cfg-timer" min="1" max="30" value="10" style="flex:1;accent-color:var(--amber);" oninput="updateTimerCfg(this.value)">
       <span id="cfg-timer-val" style="font-size:13px;color:var(--amber);font-weight:700;min-width:32px;">10m</span>
+    </div>
+  </div>
+  <div class="cfg-section"><div class="cfg-title">tema</div>
+    <div class="theme-row" id="theme-row">
+      <button class="theme-btn" data-theme-choice="light" onclick="setTheme('light')">claro</button>
+      <button class="theme-btn" data-theme-choice="auto" onclick="setTheme('auto')">auto</button>
+      <button class="theme-btn" data-theme-choice="dark" onclick="setTheme('dark')">oscuro</button>
     </div>
   </div>
   <div class="cfg-section"><div class="cfg-title">datos</div><button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);" onclick="exportAllYAML()">exportar todo como YAML</button></div>
@@ -1324,7 +1358,25 @@ function maybeShowOnboarding(){
   }catch(e){return;}
   showOnboarding(0);
 }
-document.addEventListener('DOMContentLoaded',maybeShowOnboarding);
+// Tema: 'light' | 'dark' | 'auto'. 'auto' = sin atributo, el SO decide via
+// @media prefers-color-scheme. La eleccion explicita se guarda en px2_theme
+// y sobrescribe la preferencia del SO.
+function getTheme(){try{return localStorage.getItem('px2_theme')||'auto';}catch(e){return 'auto';}}
+function applyTheme(){
+  const t=getTheme();
+  const html=document.documentElement;
+  if(t==='auto')html.removeAttribute('data-theme');
+  else html.setAttribute('data-theme',t);
+  document.querySelectorAll('#theme-row .theme-btn').forEach(b=>{
+    b.classList.toggle('sel',b.dataset.themeChoice===t);
+  });
+}
+function setTheme(t){
+  if(t!=='light'&&t!=='dark'&&t!=='auto')return;
+  try{localStorage.setItem('px2_theme',t);}catch(e){}
+  applyTheme();
+}
+document.addEventListener('DOMContentLoaded',()=>{applyTheme();maybeShowOnboarding();});
 </script>
 </body>
 </html>
