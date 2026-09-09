@@ -542,7 +542,7 @@ option{background:var(--bg3);}
 </main>
 
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-date">
     <div class="modal-head"><div class="modal-title" id="modal-date"></div><button class="modal-close" onclick="closeModalDirect()" aria-label="cerrar">×</button></div>
     <div id="modal-body"></div>
     <button class="modal-yaml-btn" id="modal-yaml-btn">exportar esta calibración como YAML</button>
@@ -1392,7 +1392,50 @@ function setTheme(t){
   try{localStorage.setItem('px2_theme',t);}catch(e){}
   applyTheme();
 }
-document.addEventListener('DOMContentLoaded',()=>{applyTheme();maybeShowOnboarding();});
+// Accesibilidad del modal: Esc para cerrar, focus trap mientras esta abierto,
+// y devolucion del foco al elemento que lo abrio. Se engancha por MutationObserver
+// para no tener que tocar los tres sitios donde se abre el modal (calibracion,
+// incidente y onboarding).
+function setupModalA11y(){
+  const overlay=document.getElementById('modal-overlay');
+  if(!overlay)return;
+  let lastFocus=null,escHandler=null,trapHandler=null;
+  function focusables(){
+    return Array.from(overlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+      .filter(el=>!el.disabled&&el.offsetParent!==null);
+  }
+  function onOpen(){
+    lastFocus=document.activeElement;
+    const list=focusables();
+    if(list.length)setTimeout(()=>list[0].focus(),0);
+    escHandler=e=>{if(e.key==='Escape')closeModalDirect();};
+    document.addEventListener('keydown',escHandler);
+    trapHandler=e=>{
+      if(e.key!=='Tab')return;
+      const list=focusables();
+      if(!list.length)return;
+      const first=list[0],last=list[list.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    };
+    overlay.addEventListener('keydown',trapHandler);
+  }
+  function onClose(){
+    if(escHandler){document.removeEventListener('keydown',escHandler);escHandler=null;}
+    if(trapHandler){overlay.removeEventListener('keydown',trapHandler);trapHandler=null;}
+    const restore=lastFocus;
+    lastFocus=null;
+    if(restore&&restore.focus&&document.body.contains(restore)){
+      setTimeout(()=>restore.focus(),0);
+    }
+  }
+  let wasOpen=overlay.classList.contains('open');
+  new MutationObserver(()=>{
+    const isOpen=overlay.classList.contains('open');
+    if(isOpen!==wasOpen){wasOpen=isOpen;if(isOpen)onOpen();else onClose();}
+  }).observe(overlay,{attributes:true,attributeFilter:['class']});
+}
+document.addEventListener('DOMContentLoaded',()=>{applyTheme();setupModalA11y();maybeShowOnboarding();});
 </script>
 </body>
 </html>
