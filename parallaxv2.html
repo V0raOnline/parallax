@@ -358,10 +358,15 @@ option{background:var(--bg3);}
     <div style="padding:0 18px 20px;">
       <button class="btn-next" id="btn-bio-start" style="width:100%;" onclick="startBio()">Registrar medición</button>
     </div>
-    <div class="screen-head" style="padding-top:0;"><div class="screen-label">vigente</div><div class="screen-title" style="font-size:14px;">Medicación</div></div>
-    <div style="padding:0 18px 14px;">
-      <div id="med-activos"></div>
-      <button class="btn-next" style="width:100%;margin-top:8px;" onclick="openMed(null)">+ añadir medicamento</button>
+<button type="button" class="hist-sec-head" style="padding-top:0;" onclick="toggleMedActivos()" aria-expanded="true" aria-controls="med-activos-panel">
+      <span><span class="screen-label" style="display:block;">vigente</span><span class="screen-title" style="display:block;font-size:14px;">Medicación</span></span>
+      <span class="hist-sec-meta"><span class="hist-count" id="count-med-activos">0</span><span class="hist-sec-arrow" id="arrow-med-activos">▶</span></span>
+    </button>
+    <div class="hist-sec open" id="med-activos-panel">
+      <div style="padding:0 18px 14px;">
+        <div id="med-activos"></div>
+        <button class="btn-next" style="width:100%;margin-top:8px;" onclick="openMed(null)">+ añadir medicamento</button>
+      </div>
     </div>
     <button type="button" class="export-toggle" onclick="toggleMedOff()" aria-expanded="false" aria-controls="med-off-panel">
       <span class="export-toggle-label">▶ retirados</span>
@@ -1198,6 +1203,27 @@ function renderMedicacion(){
     `<div class="med-meta">desde ${fechaCorta(m.inicio)||"—"}${m.fin?" · hasta "+fechaCorta(m.fin):""}</div></div>`;
   act.innerHTML=activos.length?activos.map(card).join(""):'<div class="hist-empty" style="padding:24px 0;">Sin medicación activa.</div>';
   ret.innerHTML=retirados.length?retirados.map(card).join(""):'<div class="hist-empty" style="padding:24px 0;">Ninguno retirado.</div>';
+  const cnt=document.getElementById('count-med-activos');
+  if(cnt){cnt.textContent=activos.length;cnt.classList.toggle('cero',activos.length===0);}
+  applyMedActivos();
+}
+// Vigente colapsable: nueva clave px2_med_open (por defecto abierto). Mismo
+// patron que hist-sec en historial: boton con aria-expanded y panel con
+// clase .open que oculta o muestra el contenido.
+function getMedActivosOpen(){try{const v=localStorage.getItem('px2_med_open');return v==null?true:v==='1';}catch(e){return true;}}
+function toggleMedActivos(){
+  const isOpen=!getMedActivosOpen();
+  try{localStorage.setItem('px2_med_open',isOpen?'1':'0');}catch(e){}
+  applyMedActivos();
+}
+function applyMedActivos(){
+  const open=getMedActivosOpen();
+  const p=document.getElementById('med-activos-panel');
+  const a=document.getElementById('arrow-med-activos');
+  const btn=document.querySelector('[aria-controls="med-activos-panel"]');
+  if(p)p.classList.toggle('open',open);
+  if(a)a.textContent=open?'▼':'▶';
+  if(btn)btn.setAttribute('aria-expanded',String(open));
 }
 function toggleMedOff(){
   const p=document.getElementById("med-off-panel");
