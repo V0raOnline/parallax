@@ -515,7 +515,12 @@ option{background:var(--bg3);}
   <div class="cfg-section"><div class="cfg-title">reguladores</div><div class="cfg-list" id="cfg-reguladores"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-regulador" type="text" placeholder="nuevo regulador…" maxlength="30" aria-label="nuevo regulador"><button class="btn-sm" onclick="addCfgItem('reguladores','inp-regulador')">+ añadir</button></div></div>
   <div class="cfg-section"><div class="cfg-title">subsistemas</div><div class="cfg-list" id="cfg-subsistemas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-subsistema" type="text" placeholder="nuevo subsistema…" maxlength="30" aria-label="nuevo subsistema"><button class="btn-sm" onclick="addCfgItem('subsistemas','inp-subsistema')">+ añadir</button></div></div>
   <div class="cfg-section"><div class="cfg-title">parámetros bio</div><div class="cfg-list" id="cfg-bio"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-bio-nombre" type="text" placeholder="parámetro" style="min-width:0;" aria-label="nombre del parámetro bio"><input class="cfg-input" id="inp-bio-unidad" type="text" placeholder="unidad" style="flex:0 0 62px;min-width:0;" aria-label="unidad del parámetro bio"><button class="btn-sm" onclick="addBioParam()" aria-label="añadir parámetro bio">+</button></div></div>
-  <div class="cfg-section"><div class="cfg-title">datos</div><button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);" onclick="exportAllYAML()">exportar todo como YAML</button></div>
+  <div class="cfg-section"><div class="cfg-title">datos</div>
+    <button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);" onclick="exportAllYAML()">exportar todo como YAML</button>
+    <button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);margin-top:6px;" onclick="exportBackup()">exportar backup (JSON)</button>
+    <button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);margin-top:6px;" onclick="document.getElementById('import-backup-input').click()">importar backup (JSON)</button>
+    <input type="file" id="import-backup-input" accept="application/json,.json" style="display:none" onchange="onImportBackupFile(event)">
+  </div>
   <div class="cfg-section"><div class="cfg-title">introducción</div><button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);" onclick="showOnboarding()">ver introducción de nuevo</button></div>
 </div>
 
@@ -620,10 +625,16 @@ function closeModalDirect(){
   const overlay=document.getElementById("modal-overlay");
   if(overlay.dataset.onboarding){
     try{localStorage.setItem('px2_onboarded','1');}catch(e){}
-    const yb=document.getElementById('modal-yaml-btn');if(yb)yb.style.display='';
-    const eb=document.getElementById('modal-edit-btn');if(eb)eb.style.display='';
     delete overlay.dataset.onboarding;
   }
+  if(overlay.dataset.backup){
+    delete overlay.dataset.backup;
+    window.__pendingBackup=null;
+  }
+  // Cualquier modal transitorio (onboarding, backup) oculta los botones extra
+  // de la ficha de calibracion. Restauramos display por si acaso.
+  const yb=document.getElementById('modal-yaml-btn');if(yb)yb.style.display='';
+  const eb=document.getElementById('modal-edit-btn');if(eb)eb.style.display='';
   overlay.classList.remove("open");
 }
 function renderAjustes(){const cfg=getCfg();["estados","demandas","reguladores","subsistemas"].forEach(key=>{const el=document.getElementById("cfg-"+key);if(!el)return;el.innerHTML=cfg[key].map((t,i)=>`<div class="cfg-tag"><span>${t}</span><button class="cfg-tag-del" onclick="removeCfgItem('${key}',${i})" aria-label="eliminar ${key.slice(0,-1)}: ${t}">×</button></div>`).join("");});renderBioCfg();}
@@ -1520,6 +1531,93 @@ function setupRoleButtonKeys(){
     t.click();
   });
 }
+// Backup completo del estado en JSON. Cubre configuracion + todos los streams
+// de datos + timer. NO cubre preferencias locales del navegador (tema, flag de
+// onboarding visto, secciones del historial abiertas): son ajustes de este
+// dispositivo, no de los datos del operador.
+const BACKUP_KEYS=['px2_cfg','px2_log','px2_inc_log','px2_bio','px2_med','px2_notas','px2_timer_inc'];
+function exportBackup(){
+  const keys={};
+  BACKUP_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)keys[k]=v;});
+  const data={version:2,ts:Date.now(),keys};
+  const d=new Date();const pad=n=>String(n).padStart(2,'0');
+  const fname=`px2_backup_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}.json`;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  a.download=fname;a.click();URL.revokeObjectURL(a.href);
+}
+function onImportBackupFile(ev){
+  const f=ev.target.files&&ev.target.files[0];
+  if(!f)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data||typeof data!=='object'||!data.keys||typeof data.keys!=='object'){
+        alert('El archivo no tiene la forma esperada de un backup.');return;
+      }
+      if(data.version!==2){
+        alert('Este backup es de una versión no soportada (v'+data.version+').');return;
+      }
+      confirmBackupImport(data);
+    }catch(err){alert('No se pudo leer el archivo: '+err.message);}
+  };
+  reader.readAsText(f);
+  ev.target.value='';
+}
+function confirmBackupImport(data){
+  const safeParse=(v)=>{try{return v?JSON.parse(v):null;}catch(e){return null;}};
+  const asArr=(v)=>{const p=safeParse(v);return Array.isArray(p)?p:[];};
+  const inc=data.keys;
+  const bakCounts={
+    cal:asArr(inc.px2_log).length,
+    inc:asArr(inc.px2_inc_log).length,
+    bio:asArr(inc.px2_bio).length,
+    med:asArr(inc.px2_med).length,
+    notas:(inc.px2_notas||'').length,
+  };
+  const curCounts={
+    cal:getLog().length,
+    inc:getIncLog().length,
+    bio:getBioLog().length,
+    med:asArr(localStorage.getItem('px2_med')).length,
+    notas:(localStorage.getItem('px2_notas')||'').length,
+  };
+  const line=(k,cur,bak)=>`<div class="modal-row"><span class="modal-row-key">${k}</span><span class="modal-row-val">${cur} → ${bak}</span></div>`;
+  document.getElementById('modal-date').textContent='Restaurar desde backup';
+  document.getElementById('modal-body').innerHTML=
+    '<div style="font-size:11px;color:var(--muted);line-height:1.7;margin-bottom:10px;">Estado actual → estado en el backup. Todos los datos actuales se van a sobrescribir.</div>'+
+    '<div class="modal-section">'+
+      line('calibraciones',curCounts.cal,bakCounts.cal)+
+      line('incidentes',curCounts.inc,bakCounts.inc)+
+      line('mediciones bio',curCounts.bio,bakCounts.bio)+
+      line('medicamentos',curCounts.med,bakCounts.med)+
+      line('notas (caracteres)',curCounts.notas,bakCounts.notas)+
+    '</div>'+
+    '<div style="font-size:11px;color:var(--red);margin:14px 0 4px;line-height:1.6;">Si quieres poder deshacer, exporta un backup del estado actual antes de sobrescribir.</div>'+
+    '<div class="onb-nav">'+
+      '<button class="onb-btn" onclick="closeModalDirect()">cancelar</button>'+
+      '<button class="onb-btn onb-btn-primary" onclick="applyBackupImport()">sobrescribir</button>'+
+    '</div>';
+  const yb=document.getElementById('modal-yaml-btn');if(yb)yb.style.display='none';
+  const eb=document.getElementById('modal-edit-btn');if(eb)eb.style.display='none';
+  window.__pendingBackup=data;
+  const overlay=document.getElementById('modal-overlay');
+  overlay.dataset.backup='1';
+  overlay.classList.add('open');
+}
+function applyBackupImport(){
+  const data=window.__pendingBackup;if(!data)return;
+  BACKUP_KEYS.forEach(k=>{
+    const v=data.keys[k];
+    if(v!==undefined&&v!==null){localStorage.setItem(k,v);}
+    else{localStorage.removeItem(k);}
+  });
+  window.__pendingBackup=null;
+  closeModalDirect();
+  location.reload();
+}
+
 document.addEventListener('DOMContentLoaded',()=>{applyTheme();setupModalA11y();setupGlobalEsc();setupRoleButtonKeys();maybeShowOnboarding();});
 </script>
 </body>
