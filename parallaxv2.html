@@ -492,16 +492,6 @@ option{background:var(--bg3);}
 
 <div class="view" id="view-ajustes">
   <div class="screen-head"><div class="screen-label">configuración</div><div class="screen-title">Ajustes</div></div>
-  <div class="cfg-section"><div class="cfg-title">demandas</div><div class="cfg-list" id="cfg-demandas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-demanda" type="text" placeholder="nueva demanda…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('demandas','inp-demanda')">+ añadir</button></div></div>
-  <div class="cfg-section"><div class="cfg-title">reguladores</div><div class="cfg-list" id="cfg-reguladores"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-regulador" type="text" placeholder="nuevo regulador…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('reguladores','inp-regulador')">+ añadir</button></div></div>
-  <div class="cfg-section"><div class="cfg-title">subsistemas</div><div class="cfg-list" id="cfg-subsistemas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-subsistema" type="text" placeholder="nuevo subsistema…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('subsistemas','inp-subsistema')">+ añadir</button></div></div>
-  <div class="cfg-section"><div class="cfg-title">parámetros bio</div><div class="cfg-list" id="cfg-bio"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-bio-nombre" type="text" placeholder="parámetro" style="min-width:0;"><input class="cfg-input" id="inp-bio-unidad" type="text" placeholder="unidad" style="flex:0 0 62px;min-width:0;"><button class="btn-sm" onclick="addBioParam()">+</button></div></div>
-  <div class="cfg-section"><div class="cfg-title">timer incidentes (minutos)</div>
-    <div style="padding:0 0 12px;display:flex;align-items:center;gap:12px;">
-      <input type="range" id="cfg-timer" min="1" max="30" value="10" style="flex:1;accent-color:var(--amber);" oninput="updateTimerCfg(this.value)">
-      <span id="cfg-timer-val" style="font-size:13px;color:var(--amber);font-weight:700;min-width:32px;">10m</span>
-    </div>
-  </div>
   <div class="cfg-section"><div class="cfg-title">tema</div>
     <div class="theme-row" id="theme-row">
       <button class="theme-btn" data-theme-choice="light" onclick="setTheme('light')">claro</button>
@@ -509,6 +499,16 @@ option{background:var(--bg3);}
       <button class="theme-btn" data-theme-choice="dark" onclick="setTheme('dark')">oscuro</button>
     </div>
   </div>
+  <div class="cfg-section"><div class="cfg-title">timer incidentes (minutos)</div>
+    <div style="padding:0 0 12px;display:flex;align-items:center;gap:12px;">
+      <input type="range" id="cfg-timer" min="1" max="30" value="10" style="flex:1;accent-color:var(--amber);" oninput="updateTimerCfg(this.value)">
+      <span id="cfg-timer-val" style="font-size:13px;color:var(--amber);font-weight:700;min-width:32px;">10m</span>
+    </div>
+  </div>
+  <div class="cfg-section"><div class="cfg-title">demandas</div><div class="cfg-list" id="cfg-demandas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-demanda" type="text" placeholder="nueva demanda…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('demandas','inp-demanda')">+ añadir</button></div></div>
+  <div class="cfg-section"><div class="cfg-title">reguladores</div><div class="cfg-list" id="cfg-reguladores"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-regulador" type="text" placeholder="nuevo regulador…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('reguladores','inp-regulador')">+ añadir</button></div></div>
+  <div class="cfg-section"><div class="cfg-title">subsistemas</div><div class="cfg-list" id="cfg-subsistemas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-subsistema" type="text" placeholder="nuevo subsistema…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('subsistemas','inp-subsistema')">+ añadir</button></div></div>
+  <div class="cfg-section"><div class="cfg-title">parámetros bio</div><div class="cfg-list" id="cfg-bio"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-bio-nombre" type="text" placeholder="parámetro" style="min-width:0;"><input class="cfg-input" id="inp-bio-unidad" type="text" placeholder="unidad" style="flex:0 0 62px;min-width:0;"><button class="btn-sm" onclick="addBioParam()">+</button></div></div>
   <div class="cfg-section"><div class="cfg-title">datos</div><button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);" onclick="exportAllYAML()">exportar todo como YAML</button></div>
   <div class="cfg-section"><div class="cfg-title">introducción</div><button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);" onclick="showOnboarding()">ver introducción de nuevo</button></div>
 </div>
