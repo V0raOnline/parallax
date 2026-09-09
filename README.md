@@ -217,6 +217,8 @@ En ambos casos los datos son completamente locales — viven en el `localStorage
 
 La app funciona sin conexión. Está diseñada para poder usarla en momentos de activación: mínima fricción, respuestas con un toque.
 
+Se puede usar íntegramente con teclado. Hay un skip-link inicial, el foco salta al CTA de cada pestaña al activarla, y `Esc` devuelve el foco a la barra de navegación desde cualquier vista (excepto dentro de un textarea, donde `Esc` no saca para no perder lo que estás escribiendo).
+
 Todo local. Sin servidor. Sin cuenta. Sin sincronización.
 
 Los datos viven en tu dispositivo. Cada episodio, cada registro basal, cada sesión de descompresión genera un archivo `.md` que guardas en tu carpeta de descargas, manualmente, conscientemente. Ese archivo es la foto de un evento.
