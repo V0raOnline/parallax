@@ -43,7 +43,8 @@ el mismo sistema, no una sustitución.
 |---|---|---|
 | ![incidentes v2](docs/v2-incidentes.png) | ![historial v2](docs/v2-historial.png) | ![notas v2](docs/v2-notas.png) |
 
-Los datos que aparecen en las capturas son de ejemplo, generados para la documentación.
+Los datos que aparecen en las capturas son de ejemplo, generados para la documentación. Todas
+están en tema oscuro; el tema claro se activa desde ajustes.
 
 ---
 
@@ -279,6 +280,11 @@ Si necesitas cambiar los nombres de las categorías de señales o el comportamie
 timer de incidentes y los **parámetros bio**. Estos últimos piden dos cosas, nombre y unidad, porque
 un número sin unidad no es un dato: dentro de un año, `72` no dice si son kilos o libras. Añadir un
 parámetro nuevo —un perímetro de tobillo, por ejemplo— no requiere tocar el código.
+
+La misma pestaña incluye un selector **claro / auto / oscuro**. Por defecto sigue el tema del
+sistema operativo (`prefers-color-scheme`); si eliges claro u oscuro explícitamente, la preferencia
+se guarda por navegador. También en ajustes y en about hay un botón "ver introducción" que abre de
+nuevo la presentación de la app.
 
 ---
 
