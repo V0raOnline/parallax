@@ -73,7 +73,9 @@
   }
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-button:focus-visible,.hist-sec-head:focus-visible,.export-toggle:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+button:focus-visible,a:focus-visible,.hist-sec-head:focus-visible,.export-toggle:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+.skip-link{position:absolute;left:-9999px;top:0;padding:8px 12px;background:var(--amber);color:var(--bg);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;z-index:200;border-radius:var(--rs);}
+.skip-link:focus{left:8px;top:8px;}
 html,body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100dvh;overflow-x:hidden;}
 .nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 9px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
@@ -276,14 +278,15 @@ option{background:var(--bg3);}
 </head>
 <body>
 
+<a class="skip-link" href="#" onclick="focusMainAction(event)">saltar al contenido</a>
 <nav class="nav">
-  <button class="nav-btn active" id="nav-registro" onclick="showView('registro')"><span class="nav-icon">⊕</span>registro</button>
-  <button class="nav-btn" id="nav-bio" onclick="showView('bio')"><span class="nav-icon">◈</span>bio</button>
-  <button class="nav-btn" id="nav-incidentes" onclick="showView('incidentes')"><span class="nav-icon">⚡</span>incidentes</button>
-  <button class="nav-btn" id="nav-notas" onclick="showView('notas')"><span class="nav-icon">✎</span>notas</button>
-  <button class="nav-btn" id="nav-historial" onclick="showView('historial')"><span class="nav-icon">≡</span>historial</button>
-  <button class="nav-btn" id="nav-ajustes" onclick="showView('ajustes')"><span class="nav-icon">⚙</span>ajustes</button>
-  <button class="nav-btn" id="nav-about" onclick="showView('about')"><span class="nav-icon">◎</span>about</button>
+  <button class="nav-btn active" id="nav-registro" onclick="showView('registro',event)"><span class="nav-icon">⊕</span>registro</button>
+  <button class="nav-btn" id="nav-bio" onclick="showView('bio',event)"><span class="nav-icon">◈</span>bio</button>
+  <button class="nav-btn" id="nav-incidentes" onclick="showView('incidentes',event)"><span class="nav-icon">⚡</span>incidentes</button>
+  <button class="nav-btn" id="nav-notas" onclick="showView('notas',event)"><span class="nav-icon">✎</span>notas</button>
+  <button class="nav-btn" id="nav-historial" onclick="showView('historial',event)"><span class="nav-icon">≡</span>historial</button>
+  <button class="nav-btn" id="nav-ajustes" onclick="showView('ajustes',event)"><span class="nav-icon">⚙</span>ajustes</button>
+  <button class="nav-btn" id="nav-about" onclick="showView('about',event)"><span class="nav-icon">◎</span>about</button>
 </nav>
 
 <main>
@@ -293,7 +296,7 @@ option{background:var(--bg3);}
       <img class="splash-logo" alt="PARALLAX v2">
       <div class="splash-title">consola de calibración</div>
       <div class="splash-sub">Registra tu sistema.<br>Sin juicios. Sin ruido. Solo datos.</div>
-      <button class="splash-btn" onclick="startCal()">Iniciar calibración</button>
+      <button class="splash-btn" id="btn-cal-start" onclick="startCal()">Iniciar calibración</button>
     </div>
   </div>
   <div id="cal-flow" style="display:none;">
@@ -346,7 +349,7 @@ option{background:var(--bg3);}
   <div id="bio-splash">
     <div class="screen-head"><div class="screen-label">parámetros del organismo</div><div class="screen-title">Organismo</div><div class="screen-sub">Dato crudo. Sin comparación ni tendencia.</div></div>
     <div style="padding:0 18px 20px;">
-      <button class="btn-next" style="width:100%;" onclick="startBio()">Registrar medición</button>
+      <button class="btn-next" id="btn-bio-start" style="width:100%;" onclick="startBio()">Registrar medición</button>
     </div>
     <div class="screen-head" style="padding-top:0;"><div class="screen-label">vigente</div><div class="screen-title" style="font-size:14px;">Medicación</div></div>
     <div style="padding:0 18px 14px;">
@@ -402,7 +405,7 @@ option{background:var(--bg3);}
   <div id="inc-splash">
     <div class="screen-head"><div class="screen-label">análisis puntual</div><div class="screen-title">Incidentes</div><div class="screen-sub">¿Qué acaba de alterar el sistema?</div></div>
     <div style="padding:0 18px 20px;">
-      <button class="btn-next" style="width:100%;" onclick="startIncidente()">Registrar incidente</button>
+      <button class="btn-next" id="btn-inc-start" style="width:100%;" onclick="startIncidente()">Registrar incidente</button>
     </div>
   </div>
   <div id="inc-flow" style="display:none;">
@@ -539,6 +542,7 @@ option{background:var(--bg3);}
   </div>
 </div>
 
+<a class="skip-link skip-back" href="#" onclick="focusNav(event)">volver a navegación</a>
 </main>
 
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
@@ -770,7 +774,35 @@ let editIncIdx=null;
 function getIncLog(){try{return JSON.parse(localStorage.getItem('px2_inc_log')||'[]');}catch(e){return[];}}
 function saveIncLog(l){localStorage.setItem('px2_inc_log',JSON.stringify(l));}
 
-function showView(v){
+// Mapa vista → selector de la accion principal. Se usa para saltar el foco al
+// contenido cuando se activa una pestaña con teclado y para el skip-link inicial.
+// Es estatico a proposito: historial re-renderiza su DOM al abrirse y un selector
+// dinamico "primer focusable" es fragil ahi.
+const VIEW_MAIN_ACTION={
+  registro:'#btn-cal-start',
+  bio:'#btn-bio-start',
+  incidentes:'#btn-inc-start',
+  notas:'#notas-content',
+  historial:'#view-historial .hist-sec-head',
+  ajustes:'#view-ajustes .theme-btn',
+  about:'#view-about .onb-open-btn'
+};
+function focusViewMain(v){
+  const sel=VIEW_MAIN_ACTION[v];if(!sel)return;
+  queueMicrotask(()=>{const el=document.querySelector(sel);if(el)el.focus();});
+}
+function focusMainAction(e){
+  if(e)e.preventDefault();
+  const active=document.querySelector('.nav-btn.active');
+  const v=active?active.id.replace(/^nav-/,''):'registro';
+  focusViewMain(v);
+}
+function focusNav(e){
+  if(e)e.preventDefault();
+  const active=document.querySelector('.nav-btn.active');
+  if(active)active.focus();
+}
+function showView(v,ev){
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -781,6 +813,10 @@ function showView(v){
   if(v==='notas')initNotas();
   if(v==='incidentes')backToIncSplash();
   if(v==='bio')backToBioSplash();
+  // Si la activacion vino de teclado (Enter/Space sobre un <button> sintetiza un
+  // click con event.detail===0), saltamos el foco al CTA de la vista. Con raton
+  // (detail>=1) el foco queda en el nav-btn, comportamiento nativo.
+  if(ev&&ev.detail===0)focusViewMain(v);
 }
 
 function initAjustesTimer(){
@@ -1435,7 +1471,24 @@ function setupModalA11y(){
     if(isOpen!==wasOpen){wasOpen=isOpen;if(isOpen)onOpen();else onClose();}
   }).observe(overlay,{attributes:true,attributeFilter:['class']});
 }
-document.addEventListener('DOMContentLoaded',()=>{applyTheme();setupModalA11y();maybeShowOnboarding();});
+// Escape fuera del modal devuelve el foco al nav-btn activo. Guardas: no actua si
+// el modal esta abierto (su focus trap gestiona su propio Esc) ni si el target es
+// un campo de texto o contenteditable (en notas escribiendo, Esc no saca).
+function setupGlobalEsc(){
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Escape')return;
+    if(document.getElementById('modal-overlay').classList.contains('open'))return;
+    const t=e.target;
+    if(!t)return;
+    if(/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))return;
+    if(t.isContentEditable)return;
+    const active=document.querySelector('.nav-btn.active');
+    if(!active)return;
+    e.preventDefault();
+    active.focus();
+  });
+}
+document.addEventListener('DOMContentLoaded',()=>{applyTheme();setupModalA11y();setupGlobalEsc();maybeShowOnboarding();});
 </script>
 </body>
 </html>
