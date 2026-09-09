@@ -41,7 +41,7 @@
 :root {
   --bg:#080809;--bg2:#0f0f11;--bg3:#17171a;--bg4:#1e1e22;
   --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.18);
-  --text:#e8e6e1;--muted:#7a7875;--dim:#4a4845;
+  --text:#e8e6e1;--muted:#7a7875;--dim:#7d7970;
   --amber:#e8920a;--amber-dim:#2a1c02;--amber-bright:#f5a623;
   --cyan:#00c8c8;--cyan-dim:#002a2a;
   --green:#2ecc71;--green-dim:#0a2018;
@@ -55,7 +55,7 @@
 :root[data-theme="light"]{
   --bg:#faf8f3;--bg2:#f2eee5;--bg3:#e9e4d7;--bg4:#ddd6c4;
   --border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.30);
-  --text:#1a1815;--muted:#5a564e;--dim:#8a867d;
+  --text:#1a1815;--muted:#5a564e;--dim:#6c6a63;
   --amber:#8a4d00;--amber-dim:#f5e6c8;--amber-bright:#b8710a;
   --cyan:#005555;--cyan-dim:#d0eaea;
   --green:#146d33;--green-dim:#dcecdf;
@@ -65,7 +65,7 @@
   :root:not([data-theme]){
     --bg:#faf8f3;--bg2:#f2eee5;--bg3:#e9e4d7;--bg4:#ddd6c4;
     --border:rgba(0,0,0,.10);--border2:rgba(0,0,0,.30);
-    --text:#1a1815;--muted:#5a564e;--dim:#8a867d;
+    --text:#1a1815;--muted:#5a564e;--dim:#6c6a63;
     --amber:#8a4d00;--amber-dim:#f5e6c8;--amber-bright:#b8710a;
     --cyan:#005555;--cyan-dim:#d0eaea;
     --green:#146d33;--green-dim:#dcecdf;
@@ -73,6 +73,7 @@
   }
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+button:focus-visible,.hist-sec-head:focus-visible,.export-toggle:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
 html,body{background:var(--bg);color:var(--text);font-family:var(--mono);min-height:100dvh;overflow-x:hidden;}
 .nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:10;}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 9px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .15s;}
@@ -304,11 +305,11 @@ option{background:var(--bg3);}
         <div class="scale-wrap"><div class="scale-name">fluidez mental <span>1 → 10</span></div><div class="scale-row" id="sc-fluidez"></div></div>
         <div class="scale-wrap"><div class="scale-name">velocidad cognitiva <span>1 → 10</span></div><div class="scale-row" id="sc-velocidad"></div></div>
       </div>
-      <div class="section"><div class="sect-label">sensación general</div><input class="fi" id="sensacion" type="text" placeholder="una palabra o frase corta" maxlength="120"></div>
+      <div class="section"><div class="sect-label">sensación general</div><input class="fi" id="sensacion" type="text" placeholder="una palabra o frase corta" maxlength="120" aria-label="sensación general"></div>
       <div class="section"><div class="sect-label">sueño</div>
         <div class="vitals-row">
-          <div class="vital-block"><div class="vital-label">nocturno (h)</div><input class="vital-input" id="sueno-noc" type="number" min="0" max="24" step="0.5" placeholder="—"></div>
-          <div class="vital-block"><div class="vital-label">diurno (h)</div><input class="vital-input" id="sueno-diur" type="number" min="0" max="12" step="0.5" placeholder="—"></div>
+          <div class="vital-block"><div class="vital-label">nocturno (h)</div><input class="vital-input" id="sueno-noc" type="number" min="0" max="24" step="0.5" placeholder="—" aria-label="horas de sueño nocturno"></div>
+          <div class="vital-block"><div class="vital-label">diurno (h)</div><input class="vital-input" id="sueno-diur" type="number" min="0" max="12" step="0.5" placeholder="—" aria-label="horas de sueño diurno"></div>
         </div>
       </div>
       <div class="nav-row"><button class="btn-next" onclick="goScreen(2)">Continuar →</button></div>
@@ -330,7 +331,7 @@ option{background:var(--bg3);}
     </div>
     <div id="screen-5" style="display:none;">
       <div class="screen-head"><div class="screen-label">calibración · 5 de 5</div><div class="screen-title">Observaciones</div><div class="screen-sub">Lo que el operador quiere anotar. Breve.</div></div>
-      <div class="section"><textarea class="fi" id="observaciones" placeholder="lo que el sistema quiere dejar registrado…" style="min-height:120px;"></textarea></div>
+      <div class="section"><textarea class="fi" id="observaciones" placeholder="lo que el sistema quiere dejar registrado…" style="min-height:120px;" aria-label="observaciones"></textarea></div>
       <div class="nav-row"><button class="btn-back" onclick="goScreen(4)">← Atrás</button><button class="btn-save" onclick="saveCalibration()">Guardar calibración</button></div>
     </div>
     <div id="screen-ok" style="display:none;padding:40px 18px;">
@@ -371,22 +372,22 @@ option{background:var(--bg3);}
     <div class="screen-head"><div class="screen-label">medicación</div><div class="screen-title" id="med-title">Medicamento</div></div>
     <div class="section">
       <div class="sect-label">nombre</div>
-      <input class="fi" id="med-nombre" type="text" style="min-height:0;" placeholder="nombre del medicamento">
+      <input class="fi" id="med-nombre" type="text" style="min-height:0;" placeholder="nombre del medicamento" aria-label="nombre del medicamento">
     </div>
     <div class="section">
       <div class="sect-label">posología</div>
-      <input class="fi" id="med-posologia" type="text" style="min-height:0;" placeholder="p. ej. 1 comprimido cada 12 h">
+      <input class="fi" id="med-posologia" type="text" style="min-height:0;" placeholder="p. ej. 1 comprimido cada 12 h" aria-label="posología del medicamento">
     </div>
     <div class="section">
       <div class="sect-label">periodo</div>
       <div class="vitals-row">
-        <div class="vital-block"><div class="vital-label">inicio</div><input class="fi" id="med-inicio" type="date" style="min-height:0;"></div>
-        <div class="vital-block"><div class="vital-label">fin · vacío = activo</div><input class="fi" id="med-fin" type="date" style="min-height:0;"></div>
+        <div class="vital-block"><div class="vital-label">inicio</div><input class="fi" id="med-inicio" type="date" style="min-height:0;" aria-label="fecha de inicio del medicamento"></div>
+        <div class="vital-block"><div class="vital-label">fin · vacío = activo</div><input class="fi" id="med-fin" type="date" style="min-height:0;" aria-label="fecha de fin del medicamento"></div>
       </div>
     </div>
     <div class="section">
       <div class="sect-label">notas · efectos</div>
-      <textarea class="fi" id="med-notas" style="min-height:140px;line-height:1.7;" placeholder="se sella la fecha al entrar…"></textarea>
+      <textarea class="fi" id="med-notas" style="min-height:140px;line-height:1.7;" placeholder="se sella la fecha al entrar…" aria-label="notas del medicamento"></textarea>
     </div>
     <div class="nav-row">
       <button class="btn-back" onclick="backToBioSplash()">← Atrás</button>
@@ -408,7 +409,7 @@ option{background:var(--bg3);}
     <div id="inc-screen-1">
       <div class="screen-head"><div class="screen-label">incidente · 1 de 2</div><div class="screen-title">¿Qué ha ocurrido?</div></div>
       <div class="inc-proto">
-        <div class="field"><textarea class="fi" id="inc-desc" placeholder="describe brevemente lo que acaba de pasar…" style="min-height:100px;"></textarea></div>
+        <div class="field"><textarea class="fi" id="inc-desc" placeholder="describe brevemente lo que acaba de pasar…" style="min-height:100px;" aria-label="descripción del incidente"></textarea></div>
         <div class="sect-label" style="margin-bottom:12px;">timer (opcional)</div>
         <div class="timer-wrap">
           <div class="timer-display" id="inc-timer-display">--:--</div>
@@ -438,7 +439,7 @@ option{background:var(--bg3);}
 <div class="view" id="view-notas">
   <div class="screen-head"><div class="screen-label">texto libre</div><div class="screen-title">Notas</div></div>
   <div style="padding:0 18px;">
-    <textarea class="fi" id="notas-content" style="min-height:calc(100dvh - 160px);line-height:1.7;font-size:13px;" placeholder="espacio libre…"></textarea>
+    <textarea class="fi" id="notas-content" style="min-height:calc(100dvh - 160px);line-height:1.7;font-size:13px;" placeholder="espacio libre…" aria-label="notas libres"></textarea>
     <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;">
       <span id="notas-status" style="font-size:10px;color:var(--dim);letter-spacing:.08em;"></span>
       <button class="btn-sm" onclick="clearNotas()" style="border-color:var(--dim);background:transparent;color:var(--dim);">limpiar</button>
@@ -501,14 +502,14 @@ option{background:var(--bg3);}
   </div>
   <div class="cfg-section"><div class="cfg-title">timer incidentes (minutos)</div>
     <div style="padding:0 0 12px;display:flex;align-items:center;gap:12px;">
-      <input type="range" id="cfg-timer" min="1" max="30" value="10" style="flex:1;accent-color:var(--amber);" oninput="updateTimerCfg(this.value)">
+      <input type="range" id="cfg-timer" min="1" max="30" value="10" style="flex:1;accent-color:var(--amber);" oninput="updateTimerCfg(this.value)" aria-label="minutos del timer de incidentes">
       <span id="cfg-timer-val" style="font-size:13px;color:var(--amber);font-weight:700;min-width:32px;">10m</span>
     </div>
   </div>
-  <div class="cfg-section"><div class="cfg-title">demandas</div><div class="cfg-list" id="cfg-demandas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-demanda" type="text" placeholder="nueva demanda…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('demandas','inp-demanda')">+ añadir</button></div></div>
-  <div class="cfg-section"><div class="cfg-title">reguladores</div><div class="cfg-list" id="cfg-reguladores"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-regulador" type="text" placeholder="nuevo regulador…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('reguladores','inp-regulador')">+ añadir</button></div></div>
-  <div class="cfg-section"><div class="cfg-title">subsistemas</div><div class="cfg-list" id="cfg-subsistemas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-subsistema" type="text" placeholder="nuevo subsistema…" maxlength="30"><button class="btn-sm" onclick="addCfgItem('subsistemas','inp-subsistema')">+ añadir</button></div></div>
-  <div class="cfg-section"><div class="cfg-title">parámetros bio</div><div class="cfg-list" id="cfg-bio"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-bio-nombre" type="text" placeholder="parámetro" style="min-width:0;"><input class="cfg-input" id="inp-bio-unidad" type="text" placeholder="unidad" style="flex:0 0 62px;min-width:0;"><button class="btn-sm" onclick="addBioParam()">+</button></div></div>
+  <div class="cfg-section"><div class="cfg-title">demandas</div><div class="cfg-list" id="cfg-demandas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-demanda" type="text" placeholder="nueva demanda…" maxlength="30" aria-label="nueva demanda"><button class="btn-sm" onclick="addCfgItem('demandas','inp-demanda')">+ añadir</button></div></div>
+  <div class="cfg-section"><div class="cfg-title">reguladores</div><div class="cfg-list" id="cfg-reguladores"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-regulador" type="text" placeholder="nuevo regulador…" maxlength="30" aria-label="nuevo regulador"><button class="btn-sm" onclick="addCfgItem('reguladores','inp-regulador')">+ añadir</button></div></div>
+  <div class="cfg-section"><div class="cfg-title">subsistemas</div><div class="cfg-list" id="cfg-subsistemas"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-subsistema" type="text" placeholder="nuevo subsistema…" maxlength="30" aria-label="nuevo subsistema"><button class="btn-sm" onclick="addCfgItem('subsistemas','inp-subsistema')">+ añadir</button></div></div>
+  <div class="cfg-section"><div class="cfg-title">parámetros bio</div><div class="cfg-list" id="cfg-bio"></div><div class="cfg-add-row"><input class="cfg-input" id="inp-bio-nombre" type="text" placeholder="parámetro" style="min-width:0;" aria-label="nombre del parámetro bio"><input class="cfg-input" id="inp-bio-unidad" type="text" placeholder="unidad" style="flex:0 0 62px;min-width:0;" aria-label="unidad del parámetro bio"><button class="btn-sm" onclick="addBioParam()" aria-label="añadir parámetro bio">+</button></div></div>
   <div class="cfg-section"><div class="cfg-title">datos</div><button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);" onclick="exportAllYAML()">exportar todo como YAML</button></div>
   <div class="cfg-section"><div class="cfg-title">introducción</div><button class="btn-sm" style="width:100%;border-color:var(--muted);background:transparent;color:var(--muted);" onclick="showOnboarding()">ver introducción de nuevo</button></div>
 </div>
@@ -539,7 +540,7 @@ option{background:var(--bg3);}
 
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal">
-    <div class="modal-head"><div class="modal-title" id="modal-date"></div><button class="modal-close" onclick="closeModalDirect()">×</button></div>
+    <div class="modal-head"><div class="modal-title" id="modal-date"></div><button class="modal-close" onclick="closeModalDirect()" aria-label="cerrar">×</button></div>
     <div id="modal-body"></div>
     <button class="modal-yaml-btn" id="modal-yaml-btn">exportar esta calibración como YAML</button>
 <button class="modal-yaml-btn" id="modal-edit-btn" style="margin-top:6px;border-color:var(--amber);color:var(--amber);">editar este registro</button>
@@ -602,7 +603,7 @@ function closeModalDirect(){
   }
   overlay.classList.remove("open");
 }
-function renderAjustes(){const cfg=getCfg();["demandas","reguladores","subsistemas"].forEach(key=>{const el=document.getElementById("cfg-"+key);if(!el)return;el.innerHTML=cfg[key].map((t,i)=>`<div class="cfg-tag"><span>${t}</span><button class="cfg-tag-del" onclick="removeCfgItem('${key}',${i})">×</button></div>`).join("");});renderBioCfg();}
+function renderAjustes(){const cfg=getCfg();["demandas","reguladores","subsistemas"].forEach(key=>{const el=document.getElementById("cfg-"+key);if(!el)return;el.innerHTML=cfg[key].map((t,i)=>`<div class="cfg-tag"><span>${t}</span><button class="cfg-tag-del" onclick="removeCfgItem('${key}',${i})" aria-label="eliminar ${key.slice(0,-1)}: ${t}">×</button></div>`).join("");});renderBioCfg();}
 const NOTA_SEP="· · · · · · · · · · · · · · · ·";
 const NOTA_STAMP_RE=/^\[(?:\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2}) \d{2}:\d{2}\]$/gm;
 function notaStamp(){
@@ -1235,7 +1236,7 @@ function renderBioCfg(){
   if(!el)return;
   el.innerHTML=getCfg().bio.map((p,i)=>
     `<div class="cfg-tag"><span>${p.nombre} <span style="color:var(--dim);">· ${p.unidad}</span></span>`+
-    `<button class="cfg-tag-del" onclick="removeBioParam(${i})">×</button></div>`).join("");
+    `<button class="cfg-tag-del" onclick="removeBioParam(${i})" aria-label="eliminar parámetro bio: ${p.nombre}">×</button></div>`).join("");
 }
 // Un parametro numerico necesita nombre y unidad. Un numero sin unidad en el
 // export es un huerfano: dentro de un ano "72" no dice si son kilos o libras.
