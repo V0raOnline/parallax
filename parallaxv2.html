@@ -232,7 +232,7 @@ option{background:var(--bg3);}
 .bio-input{width:92px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);color:var(--amber);font-family:var(--mono);font-size:16px;font-weight:700;padding:8px 10px;outline:none;text-align:center;}
 .bio-unit{width:42px;font-size:10px;color:var(--dim);letter-spacing:.06em;}
 .bio-hist-list{padding:0 18px;}
-.hist-sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 18px 14px;cursor:pointer;user-select:none;}
+.hist-sec-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 18px 14px;cursor:pointer;user-select:none;background:none;border:none;width:100%;font-family:inherit;color:inherit;text-align:left;}
 .hist-sec-head:active{opacity:.7;}
 .hist-sec-meta{display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .hist-count{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--amber);background:var(--amber-dim);border-radius:var(--rs);padding:2px 8px;min-width:22px;text-align:center;}
@@ -259,7 +259,7 @@ option{background:var(--bg3);}
 .inc-hist-desc{font-size:11px;color:var(--muted);line-height:1.4;margin-top:4px;}
 .delta-badge{font-size:10px;color:var(--cyan);letter-spacing:.08em;margin-top:6px;}
 /* EXPORT PANEL */
-.export-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;cursor:pointer;border-bottom:1px solid var(--border);user-select:none;}
+.export-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;cursor:pointer;border:none;border-bottom:1px solid var(--border);user-select:none;background:none;width:100%;font-family:inherit;color:inherit;text-align:left;}
 .export-toggle-label{font-size:9px;color:var(--amber);letter-spacing:.16em;text-transform:uppercase;}
 .export-toggle-arrow{font-size:11px;color:var(--dim);transition:transform .2s;}
 .export-toggle-arrow.open{transform:rotate(90deg);}
@@ -353,10 +353,10 @@ option{background:var(--bg3);}
       <div id="med-activos"></div>
       <button class="btn-next" style="width:100%;margin-top:8px;" onclick="openMed(null)">+ añadir medicamento</button>
     </div>
-    <div class="export-toggle" onclick="toggleMedOff()">
+    <button type="button" class="export-toggle" onclick="toggleMedOff()" aria-expanded="false" aria-controls="med-off-panel">
       <span class="export-toggle-label">▶ retirados</span>
       <span class="export-toggle-arrow" id="med-off-arrow">▶</span>
-    </div>
+    </button>
     <div class="export-panel" id="med-off-panel"><div id="med-retirados"></div></div>
   </div>
 
@@ -450,10 +450,10 @@ option{background:var(--bg3);}
 
 <div class="view" id="view-historial">
   <div class="screen-head"><div class="screen-title">Historial</div></div>
-  <div class="export-toggle" onclick="toggleExportPanel()">
+  <button type="button" class="export-toggle" onclick="toggleExportPanel()" aria-expanded="false" aria-controls="export-panel">
     <span class="export-toggle-label">▶ export</span>
     <span class="export-toggle-arrow" id="export-arrow">▶</span>
-  </div>
+  </button>
   <div class="export-panel" id="export-panel">
     <div class="export-checks">
       <label class="export-check-item">
@@ -475,20 +475,20 @@ option{background:var(--bg3);}
     </div>
     <button class="btn-export" onclick="exportZIP()">descargar ZIP</button>
   </div>
-  <div class="hist-sec-head" onclick="toggleHistSec('cal')">
-    <div><div class="screen-label">calibraciones</div><div class="screen-title" style="font-size:14px;">Registro longitudinal</div></div>
-    <div class="hist-sec-meta"><span class="hist-count" id="count-cal">0</span><span class="hist-sec-arrow" id="arrow-cal">▶</span></div>
-  </div>
+  <button type="button" class="hist-sec-head" onclick="toggleHistSec('cal')" aria-expanded="false" aria-controls="sec-cal">
+    <span><span class="screen-label" style="display:block;">calibraciones</span><span class="screen-title" style="display:block;font-size:14px;">Registro longitudinal</span></span>
+    <span class="hist-sec-meta"><span class="hist-count" id="count-cal">0</span><span class="hist-sec-arrow" id="arrow-cal">▶</span></span>
+  </button>
   <div class="hist-sec" id="sec-cal"><div class="hist-list" id="hist-list"></div></div>
-  <div class="hist-sec-head" onclick="toggleHistSec('inc')">
-    <div><div class="screen-label">incidentes</div><div class="screen-title" style="font-size:14px;">Historial de incidentes</div></div>
-    <div class="hist-sec-meta"><span class="hist-count" id="count-inc">0</span><span class="hist-sec-arrow" id="arrow-inc">▶</span></div>
-  </div>
+  <button type="button" class="hist-sec-head" onclick="toggleHistSec('inc')" aria-expanded="false" aria-controls="sec-inc">
+    <span><span class="screen-label" style="display:block;">incidentes</span><span class="screen-title" style="display:block;font-size:14px;">Historial de incidentes</span></span>
+    <span class="hist-sec-meta"><span class="hist-count" id="count-inc">0</span><span class="hist-sec-arrow" id="arrow-inc">▶</span></span>
+  </button>
   <div class="hist-sec" id="sec-inc"><div class="inc-hist-list" id="inc-hist-list"></div></div>
-  <div class="hist-sec-head" onclick="toggleHistSec('bio')">
-    <div><div class="screen-label">mediciones</div><div class="screen-title" style="font-size:14px;">Registro biométrico</div></div>
-    <div class="hist-sec-meta"><span class="hist-count" id="count-bio">0</span><span class="hist-sec-arrow" id="arrow-bio">▶</span></div>
-  </div>
+  <button type="button" class="hist-sec-head" onclick="toggleHistSec('bio')" aria-expanded="false" aria-controls="sec-bio">
+    <span><span class="screen-label" style="display:block;">mediciones</span><span class="screen-title" style="display:block;font-size:14px;">Registro biométrico</span></span>
+    <span class="hist-sec-meta"><span class="hist-count" id="count-bio">0</span><span class="hist-sec-arrow" id="arrow-bio">▶</span></span>
+  </button>
   <div class="hist-sec" id="sec-bio"><div class="bio-hist-list" id="bio-hist-list"></div></div>
 </div>
 
@@ -681,8 +681,10 @@ function toggleExportPanel(){
   panel.classList.toggle('open',!isOpen);
   arrow.classList.toggle('open',!isOpen);
   arrow.textContent=isOpen?'▶':'▼';
-  const label=document.querySelector('.export-toggle-label');
-  label.textContent=isOpen?'▶ export':'▼ export';
+  const btn=document.querySelector('[aria-controls="export-panel"]');
+  if(btn)btn.setAttribute('aria-expanded',String(!isOpen));
+  const label=btn?btn.querySelector('.export-toggle-label'):document.querySelector('.export-toggle-label');
+  if(label)label.textContent=isOpen?'▶ export':'▼ export';
 }
 
 function exportZIP(){
@@ -1122,7 +1124,10 @@ function toggleMedOff(){
   const p=document.getElementById("med-off-panel");
   const a=document.getElementById("med-off-arrow");
   p.classList.toggle("open");
-  a.textContent=p.classList.contains("open")?"▼":"▶";
+  const open=p.classList.contains("open");
+  a.textContent=open?"▼":"▶";
+  const btn=document.querySelector('[aria-controls="med-off-panel"]');
+  if(btn)btn.setAttribute('aria-expanded',String(open));
 }
 function openMed(id){
   medEditId=id;
@@ -1289,6 +1294,8 @@ function applyHistOpen(){
     const abierta=abiertas.indexOf(k)>=0;
     sec.classList.toggle('open',abierta);
     flecha.textContent=abierta?'▼':'▶';
+    const btn=document.querySelector('[aria-controls="sec-'+k+'"]');
+    if(btn)btn.setAttribute('aria-expanded',String(abierta));
   });
 }
 function updateHistCounts(){
