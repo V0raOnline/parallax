@@ -1,5 +1,3 @@
-# 
-
 <img title="" src="ParallaxV2.png" alt="PARALLAX — consola de calibración" width="420" data-align="center">
 
 # parallax.exe
@@ -219,6 +217,8 @@ La app funciona sin conexión. Está diseñada para poder usarla en momentos de 
 
 Se puede usar íntegramente con teclado. Hay un skip-link inicial, el foco salta al CTA de cada pestaña al activarla, y `Esc` devuelve el foco a la barra de navegación desde cualquier vista (excepto dentro de un textarea, donde `Esc` no saca para no perder lo que estás escribiendo).
 
+En móvil el pinch-to-zoom funciona con normalidad — no bloqueamos el zoom del navegador. Y en ajustes hay un toggle **tamaño de letra** (normal / grande) para quien quiera fijar la vista ampliada sin depender del gesto.
+
 Todo local. Sin servidor. Sin cuenta. Sin sincronización.
 
 Los datos viven en tu dispositivo. Cada episodio, cada registro basal, cada sesión de descompresión genera un archivo `.md` que guardas en tu carpeta de descargas, manualmente, conscientemente. Ese archivo es la foto de un evento.
@@ -258,6 +258,11 @@ px2_export_YYYYMMDD.zip
 En el panel de export del historial eliges qué streams incluir. También puedes exportar una
 calibración o un incidente sueltos en YAML desde su ficha.
 
+Aparte del YAML/ZIP (pensado para lectura externa: análisis, profesionales), en ajustes → datos
+hay un **backup en JSON** (`px2_backup_YYYYMMDD_HHMM.json`) que contiene el estado interno completo
+—configuración incluida— y que se usa como round-trip para restaurar en otro navegador o después
+de limpiar la caché.
+
 ---
 
 ## personalización
@@ -284,10 +289,12 @@ el timer de incidentes y los **parámetros bio**. Estos últimos piden dos cosas
 porque un número sin unidad no es un dato: dentro de un año, `72` no dice si son kilos o libras.
 Añadir un parámetro nuevo —un perímetro de tobillo, por ejemplo— no requiere tocar el código.
 
-La misma pestaña incluye un selector **claro / auto / oscuro**. Por defecto sigue el tema del
-sistema operativo (`prefers-color-scheme`); si eliges claro u oscuro explícitamente, la preferencia
-se guarda por navegador. También en ajustes y en about hay un botón "ver introducción" que abre de
-nuevo la presentación de la app.
+La misma pestaña incluye un selector **claro / auto / oscuro** y un selector **tamaño de letra**
+(normal / grande). El tema por defecto sigue el del sistema operativo (`prefers-color-scheme`); si
+eliges claro u oscuro explícitamente, la preferencia se guarda por navegador. El tamaño grande hace
+zoom del contenido (no de la barra de navegación) al 118% y también se recuerda por navegador. Estas
+dos preferencias son locales al dispositivo, no viajan en el backup. También en ajustes y en about
+hay un botón "ver introducción" que abre de nuevo la presentación de la app.
 
 **Backup y restauración** — en la sección "datos" de ajustes hay tres botones. *Exportar todo como
 YAML* concatena las calibraciones en un único archivo pensado para lectura externa (por ejemplo, el
@@ -322,6 +329,8 @@ Uso: copia el contenido del skill como system prompt y pega los archivos exporta
 Desarrollado por [@V0raOnline](https://github.com/V0raOnline).
 
 Repositorio: [github.com/V0raOnline/parallax](https://github.com/V0raOnline/parallax)
+
+Publicación: [v0raonline.substack.com](https://v0raonline.substack.com)
 
 Esto es gratis y va a seguir siéndolo. Si te está sirviendo, puedes invitarme a un café en
 **[ko-fi.com/v0raonline](https://ko-fi.com/v0raonline)**.
