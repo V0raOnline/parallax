@@ -68,6 +68,8 @@ Cuando empecé a anotar los episodios junto con lo que los rodeaba — energía,
 
 De esa observación salió una pregunta de ingeniera: ¿puedo modelar esto? Y de esa pregunta, una herramienta.
 
+El origen y la hipótesis están contados con más contexto en [«00-001. Problemas de navegación»](https://v0raonline.substack.com/p/00-001problemas-de-navegacion) del Substack.
+
 ---
 
 ## qué hace
