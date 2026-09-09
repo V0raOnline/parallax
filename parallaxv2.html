@@ -28,7 +28,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Key art de PARALLAX: un dial de calibración mitad radar, mitad circuito, sobre fondo negro.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -73,6 +73,11 @@
   }
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+/* Zoom solo el contenido, no el nav: la barra de 7 tabs cabe justa a 375px y
+ se saldria del viewport con el zoom aplicado a todo el body. El modal-overlay
+ y los skip-links son posicion fija fuera de main, quedan al tamano normal. */
+:root[data-font-scale="large"] main{zoom:1.18;}
+:root[data-font-scale="large"] .modal{zoom:1.18;}
 button:focus-visible,a:focus-visible,.hist-sec-head:focus-visible,.export-toggle:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
 .skip-link{position:absolute;left:-9999px;top:0;padding:8px 12px;background:var(--amber);color:var(--bg);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;z-index:200;border-radius:var(--rs);}
 .skip-link:focus{left:8px;top:8px;}
@@ -504,6 +509,12 @@ option{background:var(--bg3);}
       <button class="theme-btn" data-theme-choice="light" onclick="setTheme('light')">claro</button>
       <button class="theme-btn" data-theme-choice="auto" onclick="setTheme('auto')">auto</button>
       <button class="theme-btn" data-theme-choice="dark" onclick="setTheme('dark')">oscuro</button>
+    </div>
+  </div>
+  <div class="cfg-section"><div class="cfg-title">tamaño de letra</div>
+    <div class="theme-row" id="fontscale-row">
+      <button class="theme-btn" data-fontscale-choice="normal" onclick="setFontScale('normal')">normal</button>
+      <button class="theme-btn" data-fontscale-choice="large" onclick="setFontScale('large')">grande</button>
     </div>
   </div>
   <div class="cfg-section"><div class="cfg-title">timer incidentes (minutos)</div>
@@ -1460,6 +1471,25 @@ function setTheme(t){
   try{localStorage.setItem('px2_theme',t);}catch(e){}
   applyTheme();
 }
+
+// Tamano de letra: 'normal' (por defecto) o 'grande'. En grande aplicamos zoom
+// sobre body (~118%) via atributo data-font-scale, respetando toda la escala
+// relativa del CSS. Es una preferencia local (no viaja en el backup JSON).
+function getFontScale(){try{return localStorage.getItem('px2_font_scale')||'normal';}catch(e){return 'normal';}}
+function applyFontScale(){
+  const s=getFontScale();
+  const html=document.documentElement;
+  if(s==='normal')html.removeAttribute('data-font-scale');
+  else html.setAttribute('data-font-scale',s);
+  document.querySelectorAll('#fontscale-row .theme-btn').forEach(b=>{
+    b.classList.toggle('sel',b.dataset.fontscaleChoice===s);
+  });
+}
+function setFontScale(s){
+  if(s!=='normal'&&s!=='large')return;
+  try{localStorage.setItem('px2_font_scale',s);}catch(e){}
+  applyFontScale();
+}
 // Accesibilidad del modal: Esc para cerrar, focus trap mientras esta abierto,
 // y devolucion del foco al elemento que lo abrio. Se engancha por MutationObserver
 // para no tener que tocar los tres sitios donde se abre el modal (calibracion,
@@ -1621,7 +1651,7 @@ function applyBackupImport(){
   location.reload();
 }
 
-document.addEventListener('DOMContentLoaded',()=>{applyTheme();setupModalA11y();setupGlobalEsc();setupRoleButtonKeys();maybeShowOnboarding();});
+document.addEventListener('DOMContentLoaded',()=>{applyTheme();applyFontScale();setupModalA11y();setupGlobalEsc();setupRoleButtonKeys();maybeShowOnboarding();});
 </script>
 </body>
 </html>
