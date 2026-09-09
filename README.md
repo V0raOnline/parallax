@@ -276,15 +276,24 @@ Los cambios se aplican inmediatamente y se guardan en el dispositivo. Si restaur
 
 Si necesitas cambiar los nombres de las categorías de señales o el comportamiento central del clasificador, está en el bloque `DEFAULT_CONFIG` al inicio del HTML. Está todo comentado.
 
-**En la v2**, la pestaña de ajustes configura las listas de demandas, reguladores y subsistemas, el
-timer de incidentes y los **parámetros bio**. Estos últimos piden dos cosas, nombre y unidad, porque
-un número sin unidad no es un dato: dentro de un año, `72` no dice si son kilos o libras. Añadir un
-parámetro nuevo —un perímetro de tobillo, por ejemplo— no requiere tocar el código.
+**En la v2**, la pestaña de ajustes configura los **estados del sistema** (el vocabulario que
+aparece en la pantalla 1 de la calibración), las listas de demandas, reguladores y subsistemas,
+el timer de incidentes y los **parámetros bio**. Estos últimos piden dos cosas, nombre y unidad,
+porque un número sin unidad no es un dato: dentro de un año, `72` no dice si son kilos o libras.
+Añadir un parámetro nuevo —un perímetro de tobillo, por ejemplo— no requiere tocar el código.
 
 La misma pestaña incluye un selector **claro / auto / oscuro**. Por defecto sigue el tema del
 sistema operativo (`prefers-color-scheme`); si eliges claro u oscuro explícitamente, la preferencia
 se guarda por navegador. También en ajustes y en about hay un botón "ver introducción" que abre de
 nuevo la presentación de la app.
+
+**Backup y restauración** — en la sección "datos" de ajustes hay tres botones. *Exportar todo como
+YAML* concatena las calibraciones en un único archivo pensado para lectura externa (por ejemplo, el
+skill de análisis). *Exportar backup (JSON)* baja un `.json` con la configuración y todos los
+streams: es lo que usas si vas a limpiar la caché o migrar de navegador. *Importar backup* abre un
+selector de archivo y muestra un diálogo con la diferencia entre el estado actual y el del backup
+antes de aplicar — no fusiona: reemplaza. Las preferencias del navegador (tema, historial abierto,
+onboarding visto) no viajan en el backup a propósito, son ajustes del dispositivo.
 
 ---
 
